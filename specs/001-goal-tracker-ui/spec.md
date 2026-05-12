@@ -1,8 +1,8 @@
 # Feature Specification: Initial Page Setup
 
-**Feature Branch**: `001-goal-tracker-ui`  
-**Created**: 2026-05-11  
-**Status**: Draft  
+**Feature Branch**: `001-goal-tracker-ui`
+**Created**: 2026-05-11
+**Status**: Draft
 **Input**: User description: "initial page setup - this application should be a goal tracking web app called 'doit'. There should be two columns - a left one where current goals are shown, along with how many days left the user has to achieve the goal, and a right one where completed goals are. Each goal can be 'checked' using a checkbox, and then either move to the completed column or permanently deleted. To add new goals, a user can click on a button to open a new goal form in a modal (title and end date fields). Goals reaching their end date (within 3 days) are highlighted. Let's use a modern light theme with fun pastel colours."
 
 ## Clarifications
@@ -90,7 +90,7 @@ Users can check a goal to mark it complete, which moves it to the right column, 
 - **SC-001**: 90% of first-time users can add a goal and see it in the left column within 10 seconds.
 - **SC-002**: 100% of goals with end dates within three days display a due-soon highlight on page load or refresh.
 - **SC-003**: Marking a goal complete updates both columns in under 1 second from user action.
-- **SC-004**: Deleting a goal removes it immediately with confirmation feedback and no lingering entries.
+- **SC-004**: Deleting a goal removes it immediately with confirmation feedb ack and no lingering entries.
 - **SC-005**: Users can distinguish active vs completed goals at a glance, with no more than 1 user-reported confusion per usability session.
 
 ## Assumptions
