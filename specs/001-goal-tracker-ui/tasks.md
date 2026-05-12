@@ -31,9 +31,9 @@ description: "Task list for DoIt — Initial Page Setup"
 
 **Purpose**: Install dependencies and generate shadcn component scaffolding
 
-- [ ] T001 Install date-fns dependency: `npm install date-fns`
-- [ ] T002 Initialise shadcn/ui: run `npx shadcn@latest init`, selecting Next.js App Router and Tailwind v4 style when prompted
-- [ ] T003 Add required shadcn components: run `npx shadcn@latest add button dialog alert-dialog input label checkbox badge card`
+- [X] T001 Install date-fns dependency: `npm install date-fns`
+- [X] T002 Initialise shadcn/ui: run `npx shadcn@latest init`, selecting Next.js App Router and Tailwind v4 style when prompted
+- [X] T003 Add required shadcn components: run `npx shadcn@latest add button dialog alert-dialog input label checkbox badge card`
 
 **Checkpoint**: `node_modules/date-fns` exists; `components/ui/` contains button.tsx, dialog.tsx, alert-dialog.tsx, input.tsx, label.tsx, checkbox.tsx, badge.tsx, card.tsx
 
@@ -45,11 +45,11 @@ description: "Task list for DoIt — Initial Page Setup"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Define `GoalStatus` union type and `Goal` interface per data-model.md in `lib/types.ts`
-- [ ] T005 [P] Implement `loadGoals` and `saveGoals` localStorage helpers with SSR guard (`typeof window === 'undefined'`) and `doit:goals` key in `lib/storage.ts`
-- [ ] T006 [P] Implement `daysRemaining`, `isDueSoon`, `isOverdue`, and `formatEndDate` using date-fns (`differenceInCalendarDays`, `parseISO`, `startOfDay`, `format`) in `lib/date-utils.ts`
-- [ ] T007 Replace `app/globals.css` with Tailwind v4 `@theme inline` block containing all 10 pastel brand tokens (`--color-brand-bg`, `--color-col-active-bg`, `--color-col-active-border`, `--color-col-completed-bg`, `--color-col-completed-border`, `--color-due-soon-bg`, `--color-due-soon-border`, `--color-accent`, `--color-accent-hover`, `--color-danger`) per quickstart.md Step 2
-- [ ] T008 [P] Update `app/layout.tsx` metadata: set `title` to `"DoIt"` and `description` to `"Track your goals"`
+- [X] T004 [P] Define `GoalStatus` union type and `Goal` interface per data-model.md in `lib/types.ts`
+- [X] T005 [P] Implement `loadGoals` and `saveGoals` localStorage helpers with SSR guard (`typeof window === 'undefined'`) and `doit:goals` key in `lib/storage.ts`
+- [X] T006 [P] Implement `daysRemaining`, `isDueSoon`, `isOverdue`, and `formatEndDate` using date-fns (`differenceInCalendarDays`, `parseISO`, `startOfDay`, `format`) in `lib/date-utils.ts`
+- [X] T007 Replace `app/globals.css` with Tailwind v4 `@theme inline` block containing all 10 pastel brand tokens (`--color-brand-bg`, `--color-col-active-bg`, `--color-col-active-border`, `--color-col-completed-bg`, `--color-col-completed-border`, `--color-due-soon-bg`, `--color-due-soon-border`, `--color-accent`, `--color-accent-hover`, `--color-danger`) per quickstart.md Step 2
+- [X] T008 [P] Update `app/layout.tsx` metadata: set `title` to `"DoIt"` and `description` to `"Track your goals"`
 
 **Checkpoint**: Foundation ready — all lib/ files exist and TypeScript compiles cleanly (`npx tsc --noEmit`)
 
@@ -63,10 +63,10 @@ description: "Task list for DoIt — Initial Page Setup"
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Implement `useGoals` hook: initialise `goals` state from `loadGoals()` inside `useEffect`; expose `addGoal`, `completeGoal`, `deleteGoal` mutations that each call `saveGoals` after updating state; in `lib/useGoals.ts` (depends on T004, T005)
-- [ ] T010 [P] [US1] Implement `GoalCard` component: render shadcn `Card` containing a `Checkbox`, goal title, days-remaining `Badge` (copy per contracts/ui-contracts.md badge table), delete icon button, and `ConfirmDeleteDialog` (stub props for now); apply `bg-due-soon` + amber border when `isDueSoon` or `isOverdue`; apply line-through title when `status === 'completed'`; in `components/GoalCard.tsx` (depends on T004, T006)
-- [ ] T011 [P] [US1] Implement `GoalColumn` component: render a labelled section with column heading, a mapped list of `GoalCard` items, and a centred `emptyMessage` when the goals array is empty; in `components/GoalColumn.tsx` (depends on T004)
-- [ ] T012 [US1] Update `app/page.tsx`: mark as `'use client'`; call `useGoals`; derive `activeGoals` (status `'active'`, sorted by `createdAt` ascending) and `completedGoals` (status `'completed'`, sorted by `createdAt` descending); render two `GoalColumn` components inside a `grid grid-cols-1 md:grid-cols-2 gap-6` container with `bg-brand-bg` page background; wire stub `onComplete` and `onDelete` as no-ops for now (depends on T007, T008, T009, T010, T011)
+- [X] T009 [US1] Implement `useGoals` hook: initialise `goals` state from `loadGoals()` inside `useEffect`; expose `addGoal`, `completeGoal`, `deleteGoal` mutations that each call `saveGoals` after updating state; in `lib/useGoals.ts` (depends on T004, T005)
+- [X] T010 [P] [US1] Implement `GoalCard` component: render shadcn `Card` containing a `Checkbox`, goal title, days-remaining `Badge` (copy per contracts/ui-contracts.md badge table), delete icon button, and `ConfirmDeleteDialog` (stub props for now); apply `bg-due-soon` + amber border when `isDueSoon` or `isOverdue`; apply line-through title when `status === 'completed'`; in `components/GoalCard.tsx` (depends on T004, T006)
+- [X] T011 [P] [US1] Implement `GoalColumn` component: render a labelled section with column heading, a mapped list of `GoalCard` items, and a centred `emptyMessage` when the goals array is empty; in `components/GoalColumn.tsx` (depends on T004)
+- [X] T012 [US1] Update `app/page.tsx`: mark as `'use client'`; call `useGoals`; derive `activeGoals` (status `'active'`, sorted by `createdAt` ascending) and `completedGoals` (status `'completed'`, sorted by `createdAt` descending); render two `GoalColumn` components inside a `grid grid-cols-1 md:grid-cols-2 gap-6` container with `bg-brand-bg` page background; wire stub `onComplete` and `onDelete` as no-ops for now (depends on T007, T008, T009, T010, T011)
 
 **Checkpoint**: Running `npm run dev` shows two columns; seeded goals appear in the left column with correct badges and due-soon amber highlight
 
@@ -80,8 +80,8 @@ description: "Task list for DoIt — Initial Page Setup"
 
 ### Implementation for User Story 2
 
-- [ ] T013 [US2] Implement `AddGoalModal` component: use shadcn `Dialog` with `DialogContent`; include `Label` + `Input` for Title and `Label` + `Input type="date" min={today}` for End Date; implement local form state, trim validation, inline error messages below each field, call `onSave(title, endDate)` + `onOpenChange(false)` on valid submit, reset form on close; in `components/AddGoalModal.tsx`
-- [ ] T014 [US2] Wire `AddGoalModal` into `app/page.tsx`: add `modalOpen` boolean state; render shadcn `Button` labelled "Add Goal" (styled with `bg-accent` + `hover:bg-accent-hover`) that sets `modalOpen(true)`; render `<AddGoalModal open={modalOpen} onOpenChange={setModalOpen} onSave={(title, endDate) => addGoal(title, endDate)} />`; (depends on T012, T013)
+- [X] T013 [US2] Implement `AddGoalModal` component: use shadcn `Dialog` with `DialogContent`; include `Label` + `Input` for Title and `Label` + `Input type="date" min={today}` for End Date; implement local form state, trim validation, inline error messages below each field, call `onSave(title, endDate)` + `onOpenChange(false)` on valid submit, reset form on close; in `components/AddGoalModal.tsx`
+- [X] T014 [US2] Wire `AddGoalModal` into `app/page.tsx`: add `modalOpen` boolean state; render shadcn `Button` labelled "Add Goal" (styled with `bg-accent` + `hover:bg-accent-hover`) that sets `modalOpen(true)`; render `<AddGoalModal open={modalOpen} onOpenChange={setModalOpen} onSave={(title, endDate) => addGoal(title, endDate)} />`; (depends on T012, T013)
 
 **Checkpoint**: Full add-goal flow works end-to-end; new goal persists after page refresh
 
@@ -95,9 +95,9 @@ description: "Task list for DoIt — Initial Page Setup"
 
 ### Implementation for User Story 3
 
-- [ ] T015 [P] [US3] Implement `ConfirmDeleteDialog` component: use shadcn `AlertDialog` with `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle` ("Delete goal?"), `AlertDialogDescription` displaying `"Are you sure you want to delete '${goalTitle}'? This cannot be undone."`, `AlertDialogCancel` ("Cancel"), and `AlertDialogAction` ("Delete", styled danger red) calling `onConfirm()`; in `components/ConfirmDeleteDialog.tsx`
-- [ ] T016 [US3] Update `GoalCard` in `components/GoalCard.tsx`: add local `deleteDialogOpen` boolean state; render `<ConfirmDeleteDialog>` with `goalTitle={goal.title}` and `onConfirm={() => { onDelete(goal.id); setDeleteDialogOpen(false); }}`; wire `Checkbox` `onCheckedChange` to call `onComplete(goal.id)` when checked; (depends on T010, T015)
-- [ ] T017 [US3] Update `app/page.tsx`: replace no-op stubs with real `onComplete={completeGoal}` and `onDelete={deleteGoal}` passed into both `GoalColumn` instances; (depends on T012, T016)
+- [X] T015 [P] [US3] Implement `ConfirmDeleteDialog` component: use shadcn `AlertDialog` with `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle` ("Delete goal?"), `AlertDialogDescription` displaying `"Are you sure you want to delete '${goalTitle}'? This cannot be undone."`, `AlertDialogCancel` ("Cancel"), and `AlertDialogAction` ("Delete", styled danger red) calling `onConfirm()`; in `components/ConfirmDeleteDialog.tsx`
+- [X] T016 [US3] Update `GoalCard` in `components/GoalCard.tsx`: add local `deleteDialogOpen` boolean state; render `<ConfirmDeleteDialog>` with `goalTitle={goal.title}` and `onConfirm={() => { onDelete(goal.id); setDeleteDialogOpen(false); }}`; wire `Checkbox` `onCheckedChange` to call `onComplete(goal.id)` when checked; (depends on T010, T015)
+- [X] T017 [US3] Update `app/page.tsx`: replace no-op stubs with real `onComplete={completeGoal}` and `onDelete={deleteGoal}` passed into both `GoalColumn` instances; (depends on T012, T016)
 
 **Checkpoint**: Complete and delete flows both work; completed goals show in right column; deleted goals disappear after confirmation; all changes survive page refresh
 
@@ -107,9 +107,9 @@ description: "Task list for DoIt — Initial Page Setup"
 
 **Purpose**: Responsiveness, accessibility, and code quality across all user stories
 
-- [ ] T018 [P] Verify responsive layout in `app/page.tsx`: confirm `grid-cols-1 md:grid-cols-2` produces stacked columns on mobile (< 768 px) and side-by-side on desktop; add `min-h-screen p-6 md:p-10` padding to page container for breathing room
-- [ ] T019 [P] Add accessibility attributes across all components: `aria-label` on icon-only delete buttons in `components/GoalCard.tsx`; ensure all shadcn interactive elements retain visible focus rings; add `aria-live="polite"` region to each `GoalColumn` for screen-reader announcements on goal list changes in `components/GoalColumn.tsx`
-- [ ] T020 Run `npm run lint` and `npx tsc --noEmit`; fix any ESLint errors and TypeScript strict-mode violations across `app/`, `components/`, and `lib/`
+- [X] T018 [P] Verify responsive layout in `app/page.tsx`: confirm `grid-cols-1 md:grid-cols-2` produces stacked columns on mobile (< 768 px) and side-by-side on desktop; add `min-h-screen p-6 md:p-10` padding to page container for breathing room
+- [X] T019 [P] Add accessibility attributes across all components: `aria-label` on icon-only delete buttons in `components/GoalCard.tsx`; ensure all shadcn interactive elements retain visible focus rings; add `aria-live="polite"` region to each `GoalColumn` for screen-reader announcements on goal list changes in `components/GoalColumn.tsx`
+- [X] T020 Run `npm run lint` and `npx tsc --noEmit`; fix any ESLint errors and TypeScript strict-mode violations across `app/`, `components/`, and `lib/`
 
 ---
 
