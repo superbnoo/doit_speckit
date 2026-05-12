@@ -5,6 +5,13 @@
 **Status**: Draft  
 **Input**: User description: "initial page setup - this application should be a goal tracking web app called 'doit'. There should be two columns - a left one where current goals are shown, along with how many days left the user has to achieve the goal, and a right one where completed goals are. Each goal can be 'checked' using a checkbox, and then either move to the completed column or permanently deleted. To add new goals, a user can click on a button to open a new goal form in a modal (title and end date fields). Goals reaching their end date (within 3 days) are highlighted. Let's use a modern light theme with fun pastel colours."
 
+## Clarifications
+
+### Session 2026-05-12
+
+- Q: What persistence approach should goals use? → A: Browser local storage with client-side hydration.
+- Q: Goal deletion confirmation approach? → A: Inline confirmation dialog before deletion.
+
 ## User Scenarios *(mandatory)*
 
 ### User Story 1 - View Active Goals (Priority: P1)
@@ -48,7 +55,7 @@ Users can check a goal to mark it complete, which moves it to the right column, 
 **Acceptance Scenarios**:
 
 1. **Given** a goal in the left column, **When** the user checks its box, **Then** it moves to the right column with a completed state.
-2. **Given** a goal in either column, **When** the user chooses to delete it, **Then** the goal is removed permanently and no longer appears on the page.
+2. **Given** a goal in either column, **When** the user chooses to delete it, **Then** a confirmation dialog appears asking "Are you sure?"; on confirmation the goal is removed permanently.
 
 ---
 
@@ -69,8 +76,9 @@ Users can check a goal to mark it complete, which moves it to the right column, 
 - **FR-003**: Provide an "Add goal" button that opens a modal containing required fields: Title and End Date.
 - **FR-004**: Prevent saving a goal without both Title and End Date; End Date must not be earlier than the current date.
 - **FR-005**: Provide a checkbox on each goal to mark it complete; completed goals move to the right column.
-- **FR-006**: Allow a user to permanently delete a goal from either column.
+- **FR-006**: Allow a user to permanently delete a goal from either column with inline confirmation dialog ("Are you sure?") to prevent accidental deletion.
 - **FR-007**: Apply a modern light theme using fun pastel colors across both columns, modal, and controls.
+- **FR-008**: Persist goals in browser local storage and hydrate on load; updates (add, complete, delete) must immediately sync storage.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -89,6 +97,6 @@ Users can check a goal to mark it complete, which moves it to the right column, 
 
 - Single-user experience; multi-user collaboration is out of scope.
 - Dates use the user's local timezone; no cross-timezone adjustment required.
-- Goals persist between sessions using the project's chosen storage approach.
+- Goals persist between sessions via browser local storage; no server storage is used.
 - Accessibility baseline: keyboard navigation and visible focus states for buttons, checkboxes, and modal controls.
 - Past due goals remain visible unless completed or deleted.
