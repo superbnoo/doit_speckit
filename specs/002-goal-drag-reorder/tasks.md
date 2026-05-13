@@ -19,7 +19,7 @@
 
 **Purpose**: Install the new drag-and-drop library. All other phases depend on this.
 
-- [ ] T001 Install `@dnd-kit/core`, `@dnd-kit/sortable`, and `@dnd-kit/utilities` via npm in the project root
+- [x] T001 Install `@dnd-kit/core`, `@dnd-kit/sortable`, and `@dnd-kit/utilities` via npm in the project root
 
 **Checkpoint**: `package.json` shows `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities` in dependencies; `node_modules/@dnd-kit/` exists.
 
@@ -31,9 +31,9 @@
 
 **⚠️ CRITICAL**: US1, US2, and US3 all depend on this phase completing first.
 
-- [ ] T002 Add `sortOrder: number` field to the `Goal` interface in `lib/types.ts`
-- [ ] T003 [P] Add `migrateGoals(goals: Goal[]): Goal[]` helper to `lib/storage.ts` that back-fills `sortOrder` (value = `index * 1000`) on any goal missing the field; call `migrateGoals` inside `loadGoals()` before returning the array
-- [ ] T004 Update `lib/useGoals.ts`: (a) set `sortOrder` on new goals in `addGoal` as `max(existing sortOrders) + 1` (or `0` if list is empty); (b) add `reorderGoals(orderedIds: string[]) => void` action that re-maps active goals into the given order with normalized `sortOrder` values `0, 1, 2, …`, merges with completed goals, and calls `saveGoals`
+- [x] T002 Add `sortOrder: number` field to the `Goal` interface in `lib/types.ts`
+- [x] T003 [P] Add `migrateGoals(goals: Goal[]): Goal[]` helper to `lib/storage.ts` that back-fills `sortOrder` (value = `index * 1000`) on any goal missing the field; call `migrateGoals` inside `loadGoals()` before returning the array
+- [x] T004 Update `lib/useGoals.ts`: (a) set `sortOrder` on new goals in `addGoal` as `max(existing sortOrders) + 1` (or `0` if list is empty); (b) add `reorderGoals(orderedIds: string[]) => void` action that re-maps active goals into the given order with normalized `sortOrder` values `0, 1, 2, …`, merges with completed goals, and calls `saveGoals`
 
 **Checkpoint**: Foundation ready. The `Goal` type has `sortOrder`, `loadGoals` migrates legacy data, and `useGoals` exposes `reorderGoals`.
 
@@ -47,11 +47,11 @@
 
 ### Implementation
 
-- [ ] T005 [P] [US1] Create `components/DragHandle.tsx`: render a `<button>` element containing the `GripVertical` icon from `lucide-react`; the component accepts and spreads arbitrary HTML button props (for dnd-kit's `attributes` and `listeners`); apply `cursor-grab active:cursor-grabbing` and a `44px` minimum touch-target size with Tailwind classes; include `aria-label="Drag to reorder"`
-- [ ] T006 [US1] Modify `components/GoalCard.tsx`: add an optional `dragHandleProps?: React.HTMLAttributes<HTMLButtonElement>` prop; when present, render `<DragHandle {...dragHandleProps} />` as the first child inside `CardContent` before the existing checkbox; import `DragHandle` from `./DragHandle`
-- [ ] T007 [US1] Create `components/SortableGoalList.tsx`: (a) define an internal `SortableGoalCard` component that calls `useSortable(goal.id)` and passes `{ ...attributes, ...listeners }` as `dragHandleProps` to `GoalCard`; (b) export `SortableGoalList` which wraps the list in `DndContext` with a `PointerSensor` configured with an activation constraint of `{ distance: 8 }` (prevents accidental drag on touch scroll), wraps items in `SortableContext` with `verticalListSortingStrategy`, maps goals to `SortableGoalCard`, and calls `onReorder` with the result of `arrayMove` inside `onDragEnd`; import all dnd-kit primitives from `@dnd-kit/core`, `@dnd-kit/sortable`
-- [ ] T008 [US1] Modify `components/GoalColumn.tsx`: add optional `onReorder?: (orderedIds: string[]) => void` prop; when `onReorder` is provided and `goals.length > 0`, render `SortableGoalList` instead of the plain `goals.map(...)` block, passing `goals`, `onReorder`, `onComplete`, and `onDelete`; keep the empty-state message unchanged
-- [ ] T009 [US1] Modify `app/page.tsx`: change the `activeGoals` sort to use `sortOrder` ascending (`a.sortOrder - b.sortOrder`); pass `onReorder={reorderGoals}` to the active `GoalColumn`; leave the completed column unchanged
+- [x] T005 [P] [US1] Create `components/DragHandle.tsx`: render a `<button>` element containing the `GripVertical` icon from `lucide-react`; the component accepts and spreads arbitrary HTML button props (for dnd-kit's `attributes` and `listeners`); apply `cursor-grab active:cursor-grabbing` and a `44px` minimum touch-target size with Tailwind classes; include `aria-label="Drag to reorder"`
+- [x] T006 [US1] Modify `components/GoalCard.tsx`: add an optional `dragHandleProps?: React.HTMLAttributes<HTMLButtonElement>` prop; when present, render `<DragHandle {...dragHandleProps} />` as the first child inside `CardContent` before the existing checkbox; import `DragHandle` from `./DragHandle`
+- [x] T007 [US1] Create `components/SortableGoalList.tsx`: (a) define an internal `SortableGoalCard` component that calls `useSortable(goal.id)` and passes `{ ...attributes, ...listeners }` as `dragHandleProps` to `GoalCard`; (b) export `SortableGoalList` which wraps the list in `DndContext` with a `PointerSensor` configured with an activation constraint of `{ distance: 8 }` (prevents accidental drag on touch scroll), wraps items in `SortableContext` with `verticalListSortingStrategy`, maps goals to `SortableGoalCard`, and calls `onReorder` with the result of `arrayMove` inside `onDragEnd`; import all dnd-kit primitives from `@dnd-kit/core`, `@dnd-kit/sortable`
+- [x] T008 [US1] Modify `components/GoalColumn.tsx`: add optional `onReorder?: (orderedIds: string[]) => void` prop; when `onReorder` is provided and `goals.length > 0`, render `SortableGoalList` instead of the plain `goals.map(...)` block, passing `goals`, `onReorder`, `onComplete`, and `onDelete`; keep the empty-state message unchanged
+- [x] T009 [US1] Modify `app/page.tsx`: change the `activeGoals` sort to use `sortOrder` ascending (`a.sortOrder - b.sortOrder`); pass `onReorder={reorderGoals}` to the active `GoalColumn`; leave the completed column unchanged
 
 **Checkpoint**: Drag a goal by its grip handle to a different position in the active list → list reorders immediately. Completed column is unaffected. Single-goal list shows a handle but dragging has no effect.
 
@@ -65,9 +65,9 @@
 
 ### Implementation
 
-- [ ] T010 [US2] Extend `components/SortableGoalList.tsx`: add `activeId: string | null` state; wire `onDragStart` to set `activeId` and `onDragEnd`/`onDragCancel` to clear it; add a `DragOverlay` (imported from `@dnd-kit/core`) after `SortableContext` that renders a plain `GoalCard` (no handle props, full opacity) for the active goal when `activeId` is set
-- [ ] T011 [US2] Extend the `SortableGoalCard` wrapper inside `SortableGoalList.tsx`: read `isOver` and `isDragging` from `useSortable`; pass both as optional props down to `GoalCard` (`isOver?: boolean`, `isDragging?: boolean`)
-- [ ] T012 [US2] Update `components/GoalCard.tsx`: add `isDragging?: boolean` and `isOver?: boolean` to `GoalCardProps`; apply `opacity-40 pointer-events-none` to the `Card` when `isDragging` is true; apply `border-t-2 border-accent` to the `Card` when `isOver` is true (insertion line above the target)
+- [x] T010 [US2] Extend `components/SortableGoalList.tsx`: add `activeId: string | null` state; wire `onDragStart` to set `activeId` and `onDragEnd`/`onDragCancel` to clear it; add a `DragOverlay` (imported from `@dnd-kit/core`) after `SortableContext` that renders a plain `GoalCard` (no handle props, full opacity) for the active goal when `activeId` is set
+- [x] T011 [US2] Extend the `SortableGoalCard` wrapper inside `SortableGoalList.tsx`: read `isOver` and `isDragging` from `useSortable`; pass both as optional props down to `GoalCard` (`isOver?: boolean`, `isDragging?: boolean`)
+- [x] T012 [US2] Update `components/GoalCard.tsx`: add `isDragging?: boolean` and `isOver?: boolean` to `GoalCardProps`; apply `opacity-40 pointer-events-none` to the `Card` when `isDragging` is true; apply `border-t-2 border-accent` to the `Card` when `isOver` is true (insertion line above the target)
 
 **Checkpoint**: During drag — ghost follows pointer at full opacity; target card shows a top accent border. On Escape or outside drop — all indicators disappear; list order is unchanged.
 
@@ -81,9 +81,9 @@
 
 ### Implementation
 
-- [ ] T013 [P] [US3] Update `lib/storage.ts` `saveGoals()`: wrap `localStorage.setItem` in a try/catch; rethrow the caught error so callers can handle it; add a named export `STORAGE_KEY` constant (already used internally — extract it so other modules can reference it if needed)
-- [ ] T014 [US3] Update `lib/useGoals.ts`: add `storageError: string | null` state (default `null`); in `reorderGoals`, wrap the `saveGoals` call in try/catch — on failure set `storageError` to a user-facing message (e.g. `"Could not save order — storage is full."`) while keeping the in-memory reordered state; add `clearStorageError: () => void` to the return value; also apply the same try/catch pattern to `addGoal`, `completeGoal`, and `deleteGoal` for consistency
-- [ ] T015 [US3] Render an inline error banner in `components/SortableGoalList.tsx`: accept `storageError: string | null` and `onClearError: () => void` props; when `storageError` is non-null, render a dismissible `<div role="alert">` with the error message below the sortable list using Tailwind `bg-destructive/10 border border-destructive text-destructive text-sm rounded p-3`; update `app/page.tsx` and `GoalColumn.tsx` to thread `storageError` and `clearStorageError` from `useGoals` through to `SortableGoalList`
+- [x] T013 [P] [US3] Update `lib/storage.ts` `saveGoals()`: wrap `localStorage.setItem` in a try/catch; rethrow the caught error so callers can handle it; add a named export `STORAGE_KEY` constant (already used internally — extract it so other modules can reference it if needed)
+- [x] T014 [US3] Update `lib/useGoals.ts`: add `storageError: string | null` state (default `null`); in `reorderGoals`, wrap the `saveGoals` call in try/catch — on failure set `storageError` to a user-facing message (e.g. `"Could not save order — storage is full."`) while keeping the in-memory reordered state; add `clearStorageError: () => void` to the return value; also apply the same try/catch pattern to `addGoal`, `completeGoal`, and `deleteGoal` for consistency
+- [x] T015 [US3] Render an inline error banner in `components/SortableGoalList.tsx`: accept `storageError: string | null` and `onClearError: () => void` props; when `storageError` is non-null, render a dismissible `<div role="alert">` with the error message below the sortable list using Tailwind `bg-destructive/10 border border-destructive text-destructive text-sm rounded p-3`; update `app/page.tsx` and `GoalColumn.tsx` to thread `storageError` and `clearStorageError` from `useGoals` through to `SortableGoalList`
 
 **Checkpoint**: Reload after reorder → correct order is restored from localStorage. Storage-full scenario → inline error visible; list shows intended order; dismissing banner clears error.
 
@@ -93,8 +93,8 @@
 
 **Purpose**: Touch-scroll conflict prevention and accessibility improvements across all stories.
 
-- [ ] T016 [P] Verify that the `PointerSensor` activation constraint (`distance: 8`) set in T007 is correctly configured in `components/SortableGoalList.tsx`; on a touch device (or DevTools mobile emulation), confirm vertical page scroll still works when not touching the drag handle — adjust the constraint or add `TouchSensor` from `@dnd-kit/core` if scrolling is blocked
-- [ ] T017 [P] Add `aria-live="polite"` and `aria-label="Active goals — drag to reorder"` to the sortable list container in `components/SortableGoalList.tsx`; confirm `DragHandle` has `aria-label="Drag to reorder"` (set in T005); confirm the `DragOverlay` card has `aria-hidden="true"` to avoid duplicate announcements
+- [x] T016 [P] Verify that the `PointerSensor` activation constraint (`distance: 8`) set in T007 is correctly configured in `components/SortableGoalList.tsx`; on a touch device (or DevTools mobile emulation), confirm vertical page scroll still works when not touching the drag handle — adjust the constraint or add `TouchSensor` from `@dnd-kit/core` if scrolling is blocked
+- [x] T017 [P] Add `aria-live="polite"` and `aria-label="Active goals — drag to reorder"` to the sortable list container in `components/SortableGoalList.tsx`; confirm `DragHandle` has `aria-label="Drag to reorder"` (set in T005); confirm the `DragOverlay` card has `aria-hidden="true"` to avoid duplicate announcements
 
 **Checkpoint**: On a touch device, scrolling the goal list without touching a handle works normally. Screen reader announces "Active goals — drag to reorder" on focus.
 

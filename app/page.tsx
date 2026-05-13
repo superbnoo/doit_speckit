@@ -7,12 +7,20 @@ import { AddGoalModal } from "@/components/AddGoalModal";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const { goals, addGoal, completeGoal, deleteGoal } = useGoals();
+  const {
+    goals,
+    storageError,
+    clearStorageError,
+    addGoal,
+    completeGoal,
+    deleteGoal,
+    reorderGoals,
+  } = useGoals();
   const [modalOpen, setModalOpen] = useState(false);
 
   const activeGoals = goals
     .filter((g) => g.status === "active")
-    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 
   const completedGoals = goals
     .filter((g) => g.status === "completed")
@@ -39,6 +47,9 @@ export default function Home() {
               emptyMessage="No active goals yet. Add one to get started!"
               onComplete={completeGoal}
               onDelete={deleteGoal}
+              onReorder={reorderGoals}
+              storageError={storageError}
+              onClearError={clearStorageError}
             />
           </div>
           <div className="rounded-xl border border-col-completed-border bg-col-completed-bg p-5">

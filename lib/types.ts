@@ -18,4 +18,10 @@ export interface Goal {
    * Used for stable insertion-order sorting within a column.
    */
   createdAt: string;
+  /**
+   * Manual sort position within the active goals list.
+   * Normalized to 0, 1, 2, … after each reorder.
+   * Legacy goals without this field are migrated in loadGoals().
+   */
+  sortOrder: number;
 }
