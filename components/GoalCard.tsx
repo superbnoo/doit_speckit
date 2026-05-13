@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
+import { DragHandle } from "./DragHandle";
 import type { Goal } from "@/lib/types";
 import { daysRemaining, isDueSoon, isOverdue } from "@/lib/date-utils";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,9 @@ interface GoalCardProps {
   goal: Goal;
   onComplete: (id: string) => void;
   onDelete: (id: string) => void;
+  dragHandleProps?: React.HTMLAttributes<HTMLButtonElement>;
+  isDragging?: boolean;
+  isOver?: boolean;
 }
 
 function badgeText(goal: Goal): string {
@@ -26,7 +30,14 @@ function badgeText(goal: Goal): string {
   return `${days} days left`;
 }
 
-export function GoalCard({ goal, onComplete, onDelete }: GoalCardProps) {
+export function GoalCard({
+  goal,
+  onComplete,
+  onDelete,
+  dragHandleProps,
+  isDragging,
+  isOver,
+}: GoalCardProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const dueSoon = goal.status === "active" && isDueSoon(goal.endDate);
@@ -38,10 +49,13 @@ export function GoalCard({ goal, onComplete, onDelete }: GoalCardProps) {
       <Card
         className={cn(
           "transition-colors",
-          highlight && "bg-due-soon-bg border-due-soon-border"
+          highlight && "bg-due-soon-bg border-due-soon-border",
+          isDragging && "opacity-40 pointer-events-none",
+          isOver && "border-t-2 border-accent"
         )}
       >
         <CardContent className="flex items-start gap-3 p-4">
+          {dragHandleProps && <DragHandle {...dragHandleProps} />}
           <Checkbox
             id={`goal-${goal.id}`}
             checked={goal.status === "completed"}
