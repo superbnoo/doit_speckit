@@ -268,6 +268,9 @@ The goals can be reordered by dragging and dropping up and down
 
 + Done and rerun demo (npm run dev)
 
+## Exercise
+Add next spec to include test - update constitution file to specify: always writing test
+
 ## References
 
 [Spec-kit tutorial youtube playlist](https://www.youtube.com/watch?v=61K-2VRaC6s&list=PL4cUxeGkcC9h9RbDpG8ZModUzwy45tLjb&index=1)
