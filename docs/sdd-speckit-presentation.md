@@ -2,76 +2,126 @@
 marp: true
 theme: default
 paginate: true
-backgroundColor: #1a1a2e
-color: #eaeaea
+backgroundColor: #ffffff
+color: #333333
+footer: "© Zühlke 2025 &nbsp;&nbsp;&nbsp;&nbsp; Spec-Driven Development with SpecKit"
 style: |
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
   section {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'AA Zuehlke', 'Inter', 'Segoe UI', sans-serif;
+    font-size: 16pt;
+    padding: 40px 60px 80px 60px;
+    line-height: 1.5;
   }
   h1 {
-    color: #e94560;
-    font-size: 2.0em;
+    font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
+    font-weight: 500;
+    color: #6b2d7b;
+    font-size: 24pt;
+    border-bottom: 2px solid #6b2d7b;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
   }
   h2 {
-    color: #0f3460;
-    background: linear-gradient(90deg, #e94560, #0f3460);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 1.6em;
+    font-family: 'AA Zuehlke', 'Inter', sans-serif;
+    font-weight: normal;
+    color: #6b2d7b;
+    font-size: 16pt;
+    margin-bottom: 16px;
   }
   section.lead {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    text-align: center;
+    background: #6b2d7b;
+    color: #ffffff;
+    text-align: left;
+    padding: 60px 80px 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   section.lead h1 {
-    font-size: 2.6em;
-    color: #e94560;
+    font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
+    font-size: 32pt;
+    color: #ffffff;
+    border-bottom: none;
+    margin-bottom: 8px;
   }
   section.lead h2 {
-    font-size: 1.4em;
-    background: none;
-    -webkit-text-fill-color: #eaeaea;
-    color: #eaeaea;
+    font-size: 18pt;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: normal;
+    margin-bottom: 24px;
   }
-  section.invert {
-    background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  section.lead p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 14pt;
   }
-  section.invert h1 {
-    color: #e94560;
+  section.lead footer {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  section.lead img.logo {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    width: 100px;
+    height: auto;
   }
   strong {
-    color: #e94560;
+    font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
+    font-weight: 500;
+    color: #6b2d7b;
   }
   code {
-    background: #16213e;
-    color: #53d8fb;
+    background: #f3eaf6;
+    color: #6b2d7b;
     padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+  pre {
+    background: #f7f7f9;
+    border-left: 3px solid #6b2d7b;
     border-radius: 4px;
   }
+  pre code {
+    background: transparent;
+    color: #333333;
+  }
   blockquote {
-    border-left: 4px solid #e94560;
+    border-left: 3px solid #6b2d7b;
     padding-left: 16px;
     font-style: italic;
-    color: #b0b0b0;
+    color: #666666;
+    font-size: 14pt;
+    margin: 16px 0;
   }
   table {
-    font-size: 0.85em;
+    font-size: 14pt;
+    width: 100%;
+    border-collapse: collapse;
   }
   th {
-    background: #0f3460;
-    color: #eaeaea;
+    background: #6b2d7b;
+    color: #ffffff;
+    font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 8px 12px;
+    text-align: left;
   }
   td {
-    background: #16213e;
+    background: #faf7fb;
+    padding: 8px 12px;
+    border-bottom: 1px solid #e8e0ec;
   }
-  ul li {
-    margin-bottom: 0.4em;
+  tr:nth-child(even) td {
+    background: #f3eaf6;
   }
-  .emoji {
-    font-size: 1.4em;
+  ul li, ol li {
+    margin-bottom: 6px;
+    font-size: 16pt;
   }
   section.divider {
-    background: linear-gradient(135deg, #e94560 0%, #0f3460 100%);
+    background: #6b2d7b;
+    color: #ffffff;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -79,11 +129,28 @@ style: |
   }
   section.divider h1 {
     color: #ffffff;
-    font-size: 2.4em;
+    font-size: 28pt;
+    border-bottom: none;
+  }
+  section.divider footer {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  footer {
+    font-size: 9pt;
+    color: #999999;
+  }
+  section::after {
+    font-size: 9pt;
+    color: #999999;
+  }
+  em {
+    color: #888888;
   }
 ---
 
 <!-- _class: lead -->
+
+![logo w:100](zuhlke-logo.png)
 
 # Spec-Driven Development
 ## with SpecKit
