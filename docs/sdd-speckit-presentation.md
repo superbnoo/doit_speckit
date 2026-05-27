@@ -185,6 +185,10 @@ style: |
 An AI prompting framework for structured,
 reliable coding agent workflows
 
+&#x00A0;
+
+An Tran - *29 May 2026*
+
 ---
 
 # What is Spec-Driven Development?
