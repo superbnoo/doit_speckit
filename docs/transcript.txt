@@ -1,0 +1,4270 @@
+
+
+0:00
+All right then, my friends. In this
+0:02
+series, we're going to be looking at
+0:03
+something called SpecKit, which is a
+0:04
+little bit of tooling that was recently
+0:06
+released by GitHub. And I think the best
+0:08
+way I could describe this bit of tooling
+0:10
+is as an AI prompting framework for
+0:13
+specd driven development, which
+0:14
+integrates with various different coding
+0:16
+agents. And by spec driven I mean when
+0:19
+we're developing we start with a clear
+0:21
+highlevel specification of what we want
+0:23
+to build describing what it should be
+0:25
+what it should do without going into any
+0:27
+technical implementation details. And
+0:30
+from that spec everything else can then
+0:32
+be derived. A detailed technical plan on
+0:35
+how it can be built and with what tools.
+0:37
+Then a list of actionable tasks that can
+0:39
+be carried out to fulfill that plan. And
+0:41
+then finally the code itself. And at the
+0:44
+heart of it all is that initial
+0:46
+highlevel spec. So spec kit itself
+0:49
+provides a bunch of pre-made prompts and
+0:51
+scripts to help you follow this kind of
+0:53
+workflow with the ultimate aim being
+0:55
+that coding agents like Copilot or
+0:57
+Claude Code or Codeex or whatever else
+0:59
+can produce better results. And this is
+1:02
+something that you can implement into
+1:04
+your workflow from day one on a brand
+1:05
+new project or from within an existing
+1:08
+project to add new features. In my own
+1:10
+experience playing around with this, I
+1:11
+found it much more beneficial to work
+1:13
+with existing projects or to scaffold
+1:16
+the base project myself first and then
+1:18
+use spec kit to add new features. So,
+1:20
+for that reason, this is the approach
+1:22
+I'll be taking for this series. But
+1:23
+again, that's just been my experience
+1:25
+and it could be completely different for
+1:27
+you. Either way, I've really enjoyed
+1:29
+using Spec Kit because I've never been a
+1:31
+fan of full-on vibe coding. I think when
+1:34
+you just let the AI go wild, it's way
+1:36
+too easy for it to wander off, throw in
+1:38
+random buggy code, and everything ends
+1:40
+up feeling just carelessly stitched
+1:42
+together. When I'm using Spec Kit,
+1:44
+though, I feel like I'm much more in the
+1:46
+loop. I can see exactly what the coding
+1:48
+agents planning doing, and there's less
+1:51
+chance of it going off track. Anyway,
+1:53
+let's get started by setting all of this
+1:54
+up. So then the easiest way to get
+1:56
+started with specit is to come to the
+1:58
+specit repo which I will leave a link to
+2:00
+down below the video and you want to
+2:03
+copy this command right here. And to run
+2:05
+this you will need uv installed which is
+2:07
+a package manager for python. The uvx
+2:09
+command just runs a package without
+2:11
+installing it a little bit like npx for
+2:13
+node packages. Anyway to install uv head
+2:15
+to the astral docs where you'll see a
+2:17
+bunch of easy install methods for both
+2:19
+Mac and windows. For Mac you can use
+2:22
+brew and for Windows you can use
+2:24
+wingget. So once you've installed that
+2:26
+you can run this command in the terminal
+2:28
+and that's going to run the specify CLI
+2:30
+tool to spin up a new spec kit project.
+2:33
+You can also add on a bunch of different
+2:34
+flags to this command which we can see
+2:36
+if we scroll down here a little bit. For
+2:39
+example we can use the AI flag to say
+2:42
+what coding agent we want to use like
+2:44
+clawed code or copilot etc. Another flag
+2:47
+we can use is the here flag, which is
+2:49
+what we'll be using to set Spectkit up
+2:52
+within an existing project folder.
+2:54
+Because by default, SpecKit creates a
+2:56
+new project folder to set things up in.
+2:59
+If we use the here flag, we basically
+3:01
+say, look, set it up here in this
+3:03
+current project folder. Anyway, let's
+3:06
+make sure we grab that command and then
+3:08
+we can open a project in VS Code to use
+3:10
+this in. Okay, so this is a barebones
+3:13
+Nex.js JS application which I've already
+3:15
+scaffolded using the create next app CLI
+3:18
+and it uses the app router and
+3:20
+TypeScript. The only additional things
+3:22
+I've done are strip out the global CSS,
+3:25
+remove the public assets and remove most
+3:27
+of the page content. So it really is
+3:29
+just a blank next application. I've also
+3:32
+committed those changes to my repo. So
+3:34
+we're starting now with a clean working
+3:36
+directory. Again, you can use specit to
+3:38
+help scaffold the project to begin with
+3:39
+if you prefer. This is just the way I
+3:41
+prefer to work and what I think
+3:43
+currently works best for me when I'm
+3:44
+using spec. So then now we can open a
+3:48
+terminal in the project route and paste
+3:50
+in that command we just grabbed. And
+3:52
+then instead of supplying a new project
+3:54
+name, which is what we'd do if we didn't
+3:56
+already have a project ready, we're just
+3:58
+going to use the here flag to say setup
+4:01
+specit right here in this current
+4:03
+project folder. Now when we hit enter,
+4:05
+it's going to run the spec kit CLI where
+4:07
+first of all it tells us the current
+4:09
+directory is not empty and it asks us if
+4:13
+we want to continue. We're going to say
+4:15
+yes and hit enter.
+4:17
+Then we're going to choose what coding
+4:19
+assistant we want to use with SpecKit
+4:21
+for this project. So we could choose
+4:23
+Claude Code, Copilot, Gemini CLI, CUR,
+4:26
+etc. And I think they are adding more to
+4:28
+this list as well. So it might be that
+4:30
+you see others when you run this.
+4:32
+Anyway, we're going to select copilot
+4:34
+for this project. And next up, we choose
+4:37
+the script type. And since I'm on
+4:39
+Windows, I'm going to choose PowerShell.
+4:41
+So then when we hit enter, SpecKit's
+4:44
+going to look at our selected options
+4:46
+and then pull down a bunch of folders
+4:47
+and files from GitHub based on those
+4:50
+options, and it's going to put them
+4:51
+inside our project route. For example,
+4:54
+if you chose Copilot as your coding
+4:56
+agent like I did, then it's going to
+4:58
+bring down agitub folder with some
+5:01
+ready-made copilot commands and the
+5:04
+other prompts and script it grabs are
+5:05
+going to be geared towards copilot as
+5:07
+well. Okay, then. So now we've got all
+5:09
+the specit folders and files downloaded
+5:11
+into the project. Let's just take a
+5:13
+little look around them. So we've got
+5:15
+the git folder which I just mentioned
+5:17
+and inside that we've got a bunch of
+5:18
+different prompts prepared inside a
+5:20
+prompt folder. Now when we make prompt
+5:22
+files like this inside a prompt folder,
+5:24
+Copilot automatically makes these
+5:27
+prompts available in the chat via slash
+5:29
+commands and the command name matches
+5:31
+whatever the prompt file is called. For
+5:32
+example, we can run the plan prompt by
+5:34
+running the forward/plan command in the
+5:36
+chat. So all these prompts represent the
+5:39
+different stages of the development
+5:41
+cycle that we'll be going through with
+5:42
+specit. And we'll learn more about each
+5:44
+one as we go forward. Next, we've got
+5:47
+this new specify folder, which contains
+5:49
+three more subfolders. Memory, which is
+5:52
+where a constitution file lives. And
+5:54
+that file lays out the ground rules or
+5:57
+the founding principles of the
+5:58
+application.
+6:00
+Scripts, which in my case, because I'm
+6:01
+on Windows, contains a bunch of
+6:03
+PowerShell scripts. And the prompt files
+6:05
+we saw a moment ago instruct copilot or
+6:08
+whatever coding agent that you're using
+6:10
+to occasionally run these scripts to do
+6:12
+things like create new feature branches,
+6:14
+uh create new spec files, plan files,
+6:16
+etc. We don't really need to touch these
+6:19
+files unless you want to customize how
+6:21
+spec kit runs and works. And finally,
+6:24
+we've got the templates folder which
+6:26
+contains a bunch of template files for
+6:27
+the coding agent to use when it's
+6:29
+fleshing out new specs or plans or
+6:31
+tasks, etc. So again, we'll naturally
+6:34
+talk more about these files as we go
+6:35
+further into the series, and we'll start
+6:37
+using these different commands and
+6:38
+prompts to make new features. For now,
+6:41
+I'm just going to commit these new files
+6:43
+to main directly because there's nothing
+6:45
+much I could mess up at the moment.
+6:47
+Now, before we start using Spec Kit in
+6:50
+the project, I just want to walk through
+6:51
+what a typical development cycle might
+6:53
+look like from a bird's eye view
+6:55
+whenever we implement a new feature or
+6:57
+spec. So we're going to start by using
+6:59
+the forward slash constitution command
+7:01
+to outline some core binding principles
+7:04
+for the application as a whole. And that
+7:06
+command then runs the constitution
+7:08
+prompt which instructs the coding agent
+7:10
+to flesh out the constitution file with
+7:12
+those principles. For example, if the
+7:14
+application must focus on accessibility
+7:16
+in UX, then we would have that outlined
+7:18
+in the constitution file. Next up, we'll
+7:21
+use the spec command to make a new
+7:24
+highle specification for a feature. For
+7:26
+example, implementing a dashboard page
+7:29
+to show certain stats to a user. So this
+7:31
+spec command would run the spec prompt
+7:34
+and that prompt then instructs the
+7:36
+coding agent to take our feature idea
+7:38
+and turn it into a spec file. It also
+7:41
+switches us to a new git branch for the
+7:43
+feature. Next, we use the plan command
+7:46
+to run the plan prompt along with any
+7:48
+technical preferences we have for the
+7:50
+feature. For example, we might want to
+7:52
+use Tailwind, a certain chart library to
+7:55
+add charts, a flex layout, uh, shard CN
+7:57
+for UI components like buttons, etc. So,
+8:00
+the plan prompt instructs the coding
+8:02
+agent to take those technical
+8:04
+preferences and implements a plan to
+8:07
+make this new feature based on the spec.
+8:10
+After that, we'll use the tasks command,
+8:12
+which runs the tasks prompt. And that
+8:15
+prompt tells the coding agent to take
+8:17
+the entire technical plan and turn it
+8:19
+into a logical list of actionable coding
+8:21
+tasks which can be run to make this new
+8:24
+feature. And then finally we'll run the
+8:27
+implement command to fire off the
+8:29
+implement prompt and that instructs the
+8:31
+coding agent to actually start making
+8:33
+this new feature based on those tasks.
+8:35
+So this is the part when copilot or
+8:38
+claude code or codeex or whatever else
+8:40
+actually starts coding the feature and
+8:42
+checking it against the tasks the plan
+8:44
+and the constitution etc. So by the end
+8:46
+of this cycle we should have a new
+8:48
+working feature all based on that
+8:50
+initial spec. Then for any future
+8:54
+features that you might want to add, we
+8:55
+could walk through this entire process
+8:57
+again, minus normally the first command,
+8:59
+which for the most part you don't need
+9:01
+to run again, unless you ever want to
+9:03
+add more governing principles, in which
+9:04
+case you could rerun the command to add
+9:06
+them. Otherwise, we could just cycle
+9:08
+through these other four commands to add
+9:10
+new features. On top of these commands,
+9:14
+there's also a couple of optional ones
+9:15
+that we can run along the way. There's
+9:17
+the clarify command which you might
+9:19
+typically run after the specify one and
+9:22
+that has the coding agent look over the
+9:24
+spec once it's been created and just
+9:26
+clarify any underspecified areas with
+9:29
+you and it ask you questions to clarify
+9:31
+those. Then there's the analyze command
+9:33
+which you might run after the tasks one
+9:35
+and this command basically analyzes the
+9:37
+whole plan spec task list and other
+9:39
+artifacts to make sure they're all
+9:41
+aligned and without any conflicting
+9:43
+instructions. So, we'll see both of
+9:45
+those in action later as well. Also, I
+9:47
+do want to mention that in my experience
+9:49
+using SpecKit, the resulting documents
+9:51
+or code that gets generated isn't always
+9:53
+what I want it to be. And that's going
+9:55
+to be the case whenever we're using AI
+9:57
+to generate it for us. Specit or no spec
+9:59
+kit. That's just the way AI rolls, isn't
+10:01
+it? It sometimes creates good code or
+10:03
+sometimes creates messy code. So, along
+10:05
+the way, you should be checking the
+10:06
+documents, the work, the code, and
+10:08
+updating it as and when you need to.
+10:10
+Anyway, now we've got Specit added to
+10:13
+the project. Let's start in the next
+10:14
+lesson by making a constitution file. By
+10:17
+the way, if you want early access to
+10:19
+this entire course now, you can grab it
+10:21
+all on the netinja.dev website. It's
+10:23
+just $3 to buy or you can sign up to Net
+10:26
+Ninja Pro, which is just $9 a month.
+10:28
+Your first month is half price as well
+10:30
+using this promo code. And for that, you
+10:32
+get access to all of my courses,
+10:34
+including this one. You get early access
+10:36
+to all new courses as well. And you get
+10:38
+access to my premium masterclass
+10:40
+courses. So, I will leave this link down
+10:42
+below the video for those that are
+10:44
+interested.
+11:04
+Heat. Heat. N.
+
+
+=======
+
+
+0:01
+Okay then my friends. Now we have spec
+0:02
+kit set up inside the project. We can
+0:04
+begin the specd driven development
+0:06
+cycle. And we're going to start by using
+0:07
+the constitution command to update the
+0:09
+constitution file. So if we take a look
+0:12
+inside the specify folder inside that
+0:14
+we're going to see a constitution.mmd
+0:16
+file within the memory directory. So
+0:19
+this is just a markdown file that
+0:20
+already contains a bit of template
+0:22
+within it. And the whole premise of this
+0:24
+constitution file is to outline some
+0:26
+governing principles for your project or
+0:28
+organization which are non-negotiable.
+0:31
+For example, if accessibility should
+0:33
+always be first and forefront no matter
+0:35
+what, then that should go in your
+0:36
+constitution file. If you must use
+0:39
+certain frameworks or libraries like
+0:40
+Next or Drizzle OM without fail, then
+0:43
+that should go in your constitution
+0:45
+file. If the UX must always be clean,
+0:49
+simple, and clear no matter what, then
+0:51
+that should go in your constitution
+0:52
+file. And if you must unit test every
+0:55
+single component, that should go in your
+0:58
+constitution file. Then that file will
+1:00
+be kept as memory for the coding agent
+1:02
+to refer back to and ensure no matter
+1:04
+what feature or task is being
+1:06
+implemented, these principles are
+1:07
+adhered to. Well, that's the idea
+1:09
+anyway. So then we could manually fill
+1:12
+this constitution file in ourselves or
+1:14
+we could just use the constitution
+1:16
+command that specit gave to us in
+1:19
+copilot. So I could type forward slash
+1:22
+constitution
+1:23
+followed by a bit of input as to what
+1:26
+kind of principles I want to put in this
+1:28
+file. Now I'm just going to paste that
+1:30
+in right now to save you watching me
+1:32
+type this out from scratch. But it says,
+1:34
+"Declare principles for clean code,
+1:36
+simple UX, responsive design, and
+1:39
+minimal dependencies, absolutely no
+1:42
+testing, no unit tests, no integration
+1:44
+tests, no end to end tests. This must
+1:47
+supersede any other guidance. The
+1:49
+project must use the Nex.js, React, and
+1:52
+Tailwind versions as per the
+1:53
+package.json file. And we can attach
+1:56
+that file if we wanted to as context to
+1:58
+the prompt as well. Now, I've
+2:00
+deliberately pulled right back on the
+2:02
+testing for two reasons. First, because
+2:04
+I think the prompts that SpecKit
+2:06
+provides are geared towards test-driven
+2:08
+development, which can take a lot of
+2:10
+time. And because this is only going to
+2:12
+be a dummy throwaway app for a tutorial
+2:15
+video, I want to pull back on that a
+2:17
+lot. So you might see me occasionally
+2:20
+trying to do that like in this
+2:21
+constitution file. But for an
+2:23
+application intended for production, I
+2:25
+probably wouldn't pull back as much and
+2:27
+instead I'd outline my testing
+2:29
+preferences. And by the way, I would try
+2:32
+this whole process out with different
+2:34
+models, right? Because they do produce
+2:36
+different results. I personally like
+2:38
+Sonic for this stage because it goes
+2:39
+through step by step in real time what
+2:41
+it's doing and I can see that. But when
+2:43
+it comes to making tasks, sometimes I
+2:45
+might switch to GPT5. So definitely play
+2:48
+around yourself and see what suits you
+2:50
+best. Anyway, we're going to fire this
+2:52
+off in a moment. And when we do that,
+2:55
+because we use the constitution command,
+2:57
+Copilot is going to find that custom
+2:59
+constitution prompt in the GitHub folder
+3:01
+and it's going to run it. So let's open
+3:04
+that up and have a quick look inside to
+3:06
+see exactly what it says. And by the
+3:08
+way, it might read differently on yours
+3:11
+because SpecKit is very new and there's
+3:13
+changes coming thick and fast. But right
+3:15
+here it says the user input is the
+3:18
+dollar sign arguments and this arguments
+3:20
+thing is how we access what a user types
+3:23
+after the command no matter what that
+3:25
+command is. So if we typed constitution
+3:27
+to run that command which in turn fires
+3:29
+this constitution prompt then any words
+3:31
+typed directly after that command in the
+3:34
+chat would be taken as the arguments and
+3:36
+those arguments can then be accessed in
+3:38
+this prompt and by the coding agent if
+3:40
+we tell it to. Right? So then it also
+3:43
+tells the agent to update the
+3:45
+constitution file in the memory folder
+3:47
+and to replace any placeholder tokens in
+3:49
+square brackets based on our input after
+3:52
+the command. And down here it provides
+3:54
+concrete details on how to do that. So
+3:57
+first of all it explains how to find the
+3:59
+file and which parts to update. Then it
+4:01
+tells the agent to collect possible
+4:02
+values for the placeholders based on our
+4:04
+import the arguments. After that, it
+4:06
+instructs it to replace all those
+4:08
+placeholder token values with values
+4:10
+derived from our collected input. It
+4:13
+also might update other specit template
+4:15
+files based on this constitution to make
+4:18
+sure they're in alignment with it.
+4:20
+There's a few other steps down here as
+4:21
+well after the agents filled in the
+4:23
+blanks to make sure everything checks
+4:24
+out correctly and the type of feedback
+4:26
+it should give us in the chat when it's
+4:28
+done. But essentially when we run this
+4:30
+constitution command, it fires the
+4:32
+constitution prompt which tells the
+4:34
+coding agent to fill in the constitution
+4:36
+file in the memory folder by extracting
+4:39
+any input we give it and using that to
+4:41
+fill in any placeholder tokens. And when
+4:44
+we open this, we can see it's basically
+4:46
+just a template with a bunch of
+4:47
+different placeholders for different
+4:49
+principles. And these are the
+4:51
+placeholders copilot or whatever other
+4:53
+coding agent you're using should be
+4:54
+updating with our principles that we
+4:56
+gave it.
+4:58
+So then this constitution file would
+5:00
+serve as a reference to all future specs
+5:03
+or plans or code generated by the coding
+5:06
+agent with the goal being that anything
+5:08
+in this file should trump all other
+5:09
+information because these are your
+5:11
+non-negotiable principles. All right, so
+5:13
+now let's close some of these files and
+5:15
+we're going to hit enter on the prompt
+5:17
+to see if it does what it should do.
+5:20
+Now, it might take a little bit of time
+5:21
+to complete, and along the way, it might
+5:23
+ask us for permission to do certain
+5:25
+things, which I'm going to give it. But
+5:26
+right now, I'm just going to speed this
+5:28
+up and come back when it's done.
+5:37
+All right, so it looks like it's all
+5:39
+done and you can see the output right
+5:41
+here. If we scroll up a little bit, this
+5:43
+is the kind of summary. So it says it
+5:45
+successfully created the constitution
+5:48
+with our specified principles. And down
+5:50
+here it just lists the different
+5:52
+principles we gave it. So clean code,
+5:54
+simple UX, responsive design, minimal
+5:56
+dependencies, and then also it's been
+5:59
+very explicit in the no testing policy.
+6:02
+So much so that it's gone to update
+6:04
+other files as well. So if we click off
+6:06
+this, you can see not only did we update
+6:08
+the constitution file, but we also
+6:10
+updated three other template files right
+6:12
+here. And prior to running this command,
+6:15
+these template files had in them
+6:17
+information about testing the different
+6:19
+features that we implement. And because
+6:21
+I said, look, this is a non-negotiable
+6:23
+thing that I want to put in the
+6:25
+constitution, it's gone into all of
+6:27
+these different files, read them, and
+6:29
+updated them where it had any kind of
+6:31
+testing in place and removed them or
+6:33
+updated them to be explicit in that we
+6:35
+don't want testing in place. So, that
+6:38
+was good. Not only does it update this
+6:39
+file, it updates other template files as
+6:41
+well. All right, so let's just have a
+6:43
+little scroll through this constitution
+6:45
+file. And you can see now all of those
+6:47
+placeholders are gone, right? And it's
+6:49
+updated it with actual content. So this
+6:51
+is the first core principle, clean code.
+6:54
+I'm not going to read all of this out,
+6:56
+but basically it's saying that the code
+6:57
+must be readable, maintainable, etc.,
+7:00
+etc. And then down here we have a simple
+7:03
+UX principle. Uh, then we have
+7:05
+responsive design. I don't know whether
+7:07
+I actually said to implement the
+7:10
+responsive design. Let's have a little
+7:12
+look if we scroll right up here because
+7:14
+I can't remember saying that. Maybe I
+7:15
+did. Simple. Oh, yeah, I did. Responsive
+7:18
+design. Okay, so yeah, that is the next
+7:21
+principle. Responsive design, minimal
+7:23
+dependencies. Uh the technology stack is
+7:26
+down here. So it's looked at the
+7:27
+package.json file and found the
+7:29
+different technologies we're using and
+7:31
+put the versions here. Uh the
+7:33
+development workflow down here. So code
+7:36
+changes must be manually verified. Blah
+7:38
+blah blah. Yeah. Governance. All right.
+7:40
+So yeah, that all looks pretty good to
+7:42
+me. I'm not going to go through these
+7:43
+other files. I'm going to trust that
+7:45
+it's updated them accordingly. What I am
+7:48
+going to do is just commit these
+7:49
+changes. So I'm going to use copilot to
+7:52
+come up with the commit message. Commit
+7:54
+that. All right. Okay then. So now we've
+7:57
+run this first command which updates the
+7:59
+constitution file with any governing
+8:01
+principles. In turn that also updates
+8:04
+any other template files in accordance
+8:06
+with those principles so that when we
+8:07
+come to use them later they'll
+8:09
+incorporate that information. So going
+8:11
+forward when we start to use other
+8:14
+commands the idea is that this
+8:16
+constitution file serves as memory or
+8:18
+guidance to the coding agent and forces
+8:21
+it to stay within these outlined
+8:23
+principles. So we're kind of putting
+8:24
+walls around the application and we're
+8:26
+saying stay within these boundaries at
+8:29
+all times. Anyway, now that's done, the
+8:31
+next step is to start making a spec for
+8:33
+a new feature, which we'll do in the
+8:35
+next lesson.
+
+
+=====
+
+
+0:01
+All right there my friends. So now we
+0:02
+have run the constitution command and
+0:04
+that updated the constitution file with
+0:06
+some governing principles for any new
+0:08
+spec or plan we make. And now we can go
+0:10
+ahead and make a new spec by using the
+0:12
+specify command. All right. So we want
+0:14
+to use this specify command now which is
+0:16
+what we'd use to make a highlevel spec
+0:19
+of a new feature or even a whole segment
+0:21
+of the application. Now personally I
+0:23
+found that working on contained features
+0:25
+works better than trying to oneshot an
+0:27
+entire application with a single spec.
+0:29
+That's just my experience and I have
+0:31
+seen other people use this to flesh out
+0:32
+the entire thing in one go. It can work.
+0:35
+But when you do that, I feel like
+0:36
+there's more room for the models to veer
+0:38
+off track and start doing things it
+0:39
+shouldn't even with this spec kit setup
+0:42
+in place. Now, that's not always the
+0:44
+case, and I have tried building out
+0:46
+quite extensive specs for apps over the
+0:48
+last week or two with some success, but
+0:50
+for me, I personally prefer to work
+0:52
+through several slightly smaller
+0:54
+features and sections one at a time.
+0:56
+That's not to say the features should be
+0:58
+really small because then spec kit
+1:00
+probably becomes a little bit overkill.
+1:03
+So we're going to be trying to strike
+1:05
+some kind of happy in between ground.
+1:07
+And to begin with, we'll give it a fair
+1:08
+amount of work to do just to get the
+1:10
+main functionality of the app up and
+1:11
+running. So then let's make this spec by
+1:14
+using the forward/sp specify command in
+1:17
+the chat over here followed by our input
+1:20
+which should outline what we want to
+1:21
+make a spec for. Now this outline should
+1:24
+be high level and it should focus on the
+1:26
+what and the why instead of the how. So
+1:28
+we shouldn't be going into detail about
+1:30
+the underlying technologies or the
+1:32
+architecture that we'll be using but
+1:34
+instead focus on the user experience I
+1:36
+guess. So I'm just going to paste in a
+1:38
+little snippet that I've already prepped
+1:40
+which says this initial page setup dash.
+1:44
+This application should be a goal
+1:46
+tracking web app called do it. There
+1:48
+should be two columns. a left one where
+1:50
+current goals are shown along with how
+1:51
+many days left the user has to achieve
+1:53
+the goal and a right one where completed
+1:55
+goals are. Each goal can be checked
+1:58
+using a checkbox and then either moved
+2:00
+to the completed column or permanently
+2:02
+deleted. To add new goals, a user can
+2:05
+click on a button to open a new goal
+2:07
+form in a modal title and end date
+2:10
+fields. Goals reaching their end date
+2:12
+within 3 days are highlighted. Let's use
+2:15
+a modern light theme with fun pastel
+2:17
+colors. Now, before we send this off, I
+2:19
+want to dive into the specify command
+2:21
+and the prompt a little bit to see
+2:23
+what's going to happen when we run it.
+2:25
+So, I'm just going to click off the chat
+2:27
+window for now and then head to the
+2:29
+prompt folder to open the specify
+2:32
+prompt. Now, again, this prompt might
+2:34
+look a little bit different to yours
+2:35
+because spec kit is getting updated
+2:36
+quite frequently and I know the prompts
+2:38
+are being changed as well, but the main
+2:39
+body of the prompt and the desired
+2:41
+functionality should hopefully be very
+2:43
+similar. So then we can see up here that
+2:45
+again we're taking those arguments from
+2:46
+the command which is everything we write
+2:48
+after the specify command and it says
+2:51
+here the arguments represent the new
+2:52
+feature that we're making. All right. So
+2:54
+then it does four things essentially. It
+2:55
+runs a create new feature script from
+2:58
+inside the script file and we'll see
+2:59
+that in a moment but essentially this
+3:01
+script does a couple of things. It makes
+3:03
+and checks out a new feature branch for
+3:05
+us and it makes a new folder to store
+3:07
+the new spec file in and it also creates
+3:09
+that new spec file. Then it loads the
+3:11
+spec template file from the templates
+3:14
+folder to understand the structure of a
+3:15
+spec file. After that it writes the spec
+3:18
+inside the new spec file which was
+3:20
+created. And finally it tells the agent
+3:22
+to report back to us including this
+3:25
+information.
+3:26
+So let's have a very quick look at that
+3:29
+create new feature script from inside
+3:31
+the scripts folder. And I don't want to
+3:34
+go through each and every line of this
+3:35
+but just highlight a couple of things
+3:37
+it's doing. So if we scroll down here a
+3:39
+little bit, we'll eventually see a new
+3:41
+variable called branch name or something
+3:43
+similar. And this is where the script is
+3:46
+creating a new branch to work on the
+3:48
+spec and feature. So it's not making
+3:50
+changes directly then to the main
+3:52
+branch. Now it decides the branch name
+3:54
+by using a feature number and then the
+3:57
+first three words of the arguments or
+4:00
+the feature description that we gave it.
+4:01
+For this reason, I normally make sure
+4:03
+the first three words if we open the
+4:05
+chat back up are what I'd like the
+4:07
+branch to be called. In this case,
+4:09
+initial page setup, right? Anyway, then
+4:12
+we try to switch to that branch
+4:14
+somewhere down here. Then we make a copy
+4:18
+of the spec template file and we place
+4:20
+it inside a new feature folder. And then
+4:22
+finally down here, there's a bunch of
+4:24
+JSON outputs to the terminal like the
+4:26
+branch name, the new spec file location,
+4:29
+the feature number, etc. And all of
+4:30
+those values from the terminal are then
+4:32
+available for the coding agent to use.
+4:35
+So for example, if we go back to the
+4:37
+specify prompt, we can see that it
+4:39
+references the spec file value and tells
+4:43
+the agent to update that file to write
+4:45
+the new specification. So it's grabbing
+4:47
+that from the terminal, that spec file
+4:49
+value. Anyway, by all means, dig deeper
+4:51
+into this. But for now, I'm going to
+4:53
+close down these files, then open the
+4:55
+chat back up, and we're going to fire
+4:57
+off this prompt to see what happens.
+5:07
+All right, then. So, it looks like
+5:08
+everything's done. So, I'm going to
+5:10
+scroll up here and have a little bit of
+5:11
+a nose here. So, we can see it's created
+5:14
+a new branch called 001 initial page
+5:17
+setup. And down here, we can see we're
+5:18
+on that branch, which is good. So, we're
+5:20
+not working on the main branch anymore.
+5:22
+And it's created this spec file, which
+5:24
+we see over here. And also if we open up
+5:26
+the file tree, we should see that that's
+5:29
+inside a folder called 001 initial page
+5:32
+setup. The same name as the branch. And
+5:34
+that's inside a specs folder. So
+5:36
+whenever we create specs in the future,
+5:37
+they're all going to go inside this new
+5:39
+specs folder. And also it's going to
+5:41
+create a new folder for that particular
+5:43
+spec as well, which will be the same
+5:44
+name as the branch. The only file it's
+5:47
+created in this stage is this spec file.
+5:50
+So then down here, there's a summary of
+5:53
+the spec file down here, but instead of
+5:55
+reading that, we'll just go straight to
+5:56
+the spec file itself, and glance through
+5:58
+this. So this stuff at the top, this is
+6:01
+a little bit of metadata, I guess you
+6:02
+could say. It's got the feature branch
+6:04
+name, when this spec was created, the
+6:06
+status, which is draft, then our initial
+6:08
+user input. Now down here, we've got
+6:11
+this execution flow, and these are
+6:12
+actually instructions to the coding
+6:14
+agent on how to go about creating this
+6:16
+spec. This was all in the spec template
+6:19
+that it used. So it basically says get
+6:23
+our input, extract any key concepts, and
+6:26
+then anything that's unclear from our
+6:28
+user input, we need to add this needs
+6:30
+clarification token to. Now, you might
+6:33
+see in your specs that you're going to
+6:35
+have some little sections that say needs
+6:37
+clarification, and you can go in and
+6:39
+edit those, or you can just run the
+6:41
+clarify command, which we'll see in the
+6:43
+next lesson, and that's going to help to
+6:45
+update those sections as well. Anyway,
+6:47
+down here there's some more instructions
+6:48
+on how to actually generate this file.
+6:50
+We're not going to go through those. And
+6:52
+if we scroll down here, I'm going to
+6:54
+come to the user story. Okay, so this is
+6:57
+essentially the first real part of the
+7:00
+spec. We have the primary user story. So
+7:02
+what's actually happening for this
+7:03
+feature and it summarizes it right here.
+7:06
+A user wants to track their personal
+7:07
+goals with deadlines to stay motivated
+7:10
+and organized. They need to see their
+7:11
+active goals at a glance, understand how
+7:13
+much time they have left, celebrate
+7:15
+completed goals and easily add new ones.
+7:18
+The interface should be visually
+7:20
+appealing and encourage regular use.
+7:22
+That sounds all right to me. Then we've
+7:24
+got some acceptance scenarios. So these
+7:27
+are scenarios that a user might go
+7:28
+through on the web page. For example,
+7:31
+given a user visits the Dewey app, when
+7:33
+they view the main page, then they see
+7:35
+two distinct columns, right? Current
+7:37
+goals on the left and completed goals on
+7:39
+the right. So these are things that have
+7:41
+to be adhered to. Then down here we've
+7:43
+got some edge cases which are basically
+7:45
+questions that need answering at some
+7:47
+point. So a lot of the time I would see
+7:50
+needs clarification tokens right here. I
+7:53
+don't see them right now but in the next
+7:54
+lesson when we do look at the clarify
+7:56
+command it might ask us some of these
+7:59
+questions from the edge cases just so
+8:01
+that it knows in the future when it
+8:03
+comes to implement this spec what to do
+8:05
+in these scenarios.
+8:07
+Down here we've got some functional
+8:08
+requirements and that's what this FR
+8:10
+stands for. So there's one to 14, right?
+8:15
+So basically these are all the kind of
+8:17
+things that the app must do. So for
+8:19
+example, the system must display two
+8:21
+distinct columns, current goals and
+8:23
+completed goals. The system must show
+8:25
+each current goal with its title,
+8:27
+calculated days, remaining until end
+8:30
+date, and a checkbox blah blah blah. You
+8:32
+can read through all of these. I'm not
+8:34
+going to do that right now, but at a
+8:35
+glance, they look okay. Then we've got
+8:39
+some key entities. So, we've got the
+8:41
+goal, which represents a users's
+8:43
+objective with a title, end date,
+8:44
+completion status. These are basically
+8:46
+like the data models, I guess. And we've
+8:48
+also got the user session, which
+8:50
+represents the users's interaction with
+8:52
+the app. All right. Then, finally, we've
+8:54
+got a content quality checklist down
+8:56
+here. So, as the AI makes this spec, it
+8:59
+goes through this and checks off each
+9:01
+one to make sure it's done all of these
+9:02
+things. So there's no implementation
+9:05
+details and I said before remember we
+9:07
+don't go into any technical details
+9:09
+really in the spec. We keep it at a high
+9:11
+level and focus on the what and the why
+9:14
+not the how. So it's checked that off.
+9:17
+Then we have this one focused on user
+9:20
+value and business needs written for
+9:22
+non-technical stakeholders. So again
+9:24
+it's not technical and all mandatory
+9:26
+sections are completed. Then we've got
+9:29
+another checklist down here. So there's
+9:32
+no needs clarification markers. The
+9:34
+requirements are testable. Blah blah
+9:36
+blah. And then this down here, another
+9:38
+checklist. Anyway, I'm not going to go
+9:40
+through all of this. We have the spec
+9:42
+file now, which is that highle spec. And
+9:45
+from this, we'll be able to actually
+9:47
+plan the feature using a more technical
+9:49
+approach, which we'll see later. In the
+9:51
+next lesson though, we're going to use
+9:52
+that optional command clarify just to
+9:54
+clarify a few underspecified sections of
+9:57
+this spec.
+
+
+=====
+
+
+0:00
+Okay then my friends in the previous
+0:02
+video we used the specify command to
+0:04
+make a new spec which is now sitting
+0:05
+inside the specs folder within a 001
+0:08
+initial page setup folder and that is
+0:11
+also the name of the branch that specit
+0:13
+switched us to to work on this new
+0:14
+feature. So all the remaining work that
+0:16
+we do for the feature including all the
+0:18
+planning or the code generation itself
+0:20
+can be done on this branch. Anyway, now
+0:22
+we've got the spec created. We can
+0:24
+either go right onto the planning stage
+0:26
+by running the forward/plan command or
+0:28
+we can optionally run the clarify
+0:30
+command first of all. And the clarify
+0:33
+command instructs the coding agent to
+0:35
+read through the current spec file to
+0:36
+find any ambiguities, edge cases or
+0:39
+areas that might need further
+0:40
+clarification. And it asks us about them
+0:42
+and then we can provide feedback for
+0:44
+each one of those which the agent will
+0:46
+then bake into the spec file. So this
+0:49
+step isn't required, but it might be a
+0:51
+good idea, especially if you have any
+0:53
+needs clarification markers in your
+0:55
+current spec. So let's do this then. I'm
+0:58
+going to say forward slashclarify,
+1:00
+and this is going to run the clarify
+1:02
+prompt. I'm not going to go through
+1:03
+this, but you can read through this if
+1:05
+you like. It's quite detailed, but
+1:07
+essentially what it's going to do is
+1:08
+look at our spec file, and it's going to
+1:11
+see if there's any underspecified areas.
+1:13
+If there is, it's going to ask us about
+1:15
+them and it will give us some options
+1:17
+that we can reply with. And once we've
+1:20
+answered all those questions, then it's
+1:22
+going to update the spec with our
+1:24
+answers. Also, if there is any of those
+1:27
+needs clarification markers in there, it
+1:29
+should look at those as well and ask us
+1:31
+about them. So, let's run this command.
+1:33
+I'm going to press enter now and just
+1:34
+give it a minute or so to look at the
+1:36
+file.
+1:40
+All right. All right. So now we've got
+1:41
+the first question and it says how
+1:43
+should the app store goals data between
+1:45
+browser sessions. Okay. So I want local
+1:48
+storage. I was going to specify this in
+1:49
+the plan later but it's asking us right
+1:52
+now. So I'm going to say option A but
+1:54
+the other options were session storage
+1:56
+uh cloud database or file download and
+1:58
+upload. Or at the end if you want you
+2:00
+can just provide your own short answer
+2:02
+less or equal to five words. I'm going
+2:04
+to go with option A and just hit enter.
+2:11
+All right, next question. And that says,
+2:13
+"What should happen when a goal's end
+2:15
+date has already passed?" So option A is
+2:18
+keep in the current goals with an
+2:19
+overdue label. B is automatically moved
+2:23
+to completed goals marked as expired. C
+2:25
+is show urgent warning popup requiring a
+2:28
+user action. D is move to a separate
+2:31
+overdue column. Or we can give a
+2:33
+different answer. I'm going to say
+2:35
+delete overdue
+2:39
+goals and press enter.
+2:41
+[Music]
+2:46
+All right, question three is what should
+2:49
+happen when a user tries to submit the
+2:51
+gold form with empty fields? So, option
+2:53
+A is show a red border around the fields
+2:56
+with inline error messages. Uh display a
+2:58
+single error or pop-up alert listing all
+3:01
+missing fields. disable a button or the
+3:04
+submit button rather until all fields
+3:05
+are filled. Shake the form and highlight
+3:07
+empty fields. So I think this one right
+3:10
+here. Let's just go with something
+3:11
+simple. Option A.
+3:18
+All right. Next one. So how should
+3:20
+completed goals be organized in the
+3:22
+right column? Most recently completed at
+3:25
+the top. Oldest completed goals at the
+3:27
+top. Alphabetical order. Completion
+3:29
+date. I think A. again. Let's just go
+3:31
+with that.
+3:33
+[Music]
+3:38
+All right, then. So, the next one. How
+3:40
+should the system display days remaining
+3:42
+for goals with end dates far in the
+3:44
+future? Show exact number. Okay, that's
+3:47
+a lot of days. Convert to approximate
+3:49
+units. Uh, cap display at maximum. Show
+3:52
+both formats. I think B for this one. I
+3:55
+think showing all the days if it's that
+3:56
+far in the the future is a bit silly.
+3:58
+Let's go with B. and press enter.
+4:09
+All right, so that's all done. Now it
+4:11
+says it's filled in all of the
+4:13
+clarifications. So we've done five
+4:15
+questions. And if we scroll down here,
+4:19
+it says the recommendation now is to
+4:21
+proceed to the plan. So also if you look
+4:24
+at the spec file over here, you can see
+4:26
+there's going to be new sections in it
+4:28
+all down here. I think let's have a
+4:30
+look. Yeah, we've got some different
+4:31
+functional requirements down here that
+4:33
+it's added based on our answers. We've
+4:36
+got some clarifications down here as
+4:37
+well. So, every question and answer is
+4:39
+down there. And I think that's it. So,
+4:41
+now we're ready to move on to the plan
+4:43
+stage. I'm going to keep these changes
+4:46
+like so.
+
+
+
+======
+
+
+
+0:01
+Okay, so we've run three spec kit
+0:03
+commands so far, right? We've run
+0:05
+constitution to set up the constitution
+0:07
+file which outlines some grounding
+0:08
+unbreakable principles for the project.
+0:11
+Specify to flesh out a highle
+0:13
+specification for a feature that we want
+0:14
+to implement and that created a new spec
+0:16
+file for us and switched us to a new
+0:18
+branch. And then the clarify command to
+0:20
+help pat out some ambiguities, edge
+0:22
+cases, and any areas that needed further
+0:24
+clarification. So that was a bit like
+0:26
+giving the spec a final polish before we
+0:28
+move on. And I would say at this point
+0:30
+before you start the planning stage, it
+0:32
+would be a good moment to actually read
+0:34
+over your spec and make sure it's
+0:36
+correct. If I want to edit the spec, now
+0:39
+is the time to do it because all the
+0:41
+planning, research, task generation, and
+0:43
+so forth is going to be based on this
+0:45
+spec. So, it's better to make sure it's
+0:47
+right now than find out after all that
+0:49
+planning and all the extra work has been
+0:51
+done. So read over it, make sure it's
+0:54
+decent, and if there's anything you want
+0:56
+to change, you can do that manually or
+0:58
+ask the coding agent to do it. And
+1:00
+that's not to say you can't edit the
+1:01
+spec later. You can, but because none of
+1:03
+the extra planning has been done yet, it
+1:05
+just makes it easier to do it at this
+1:07
+stage. Anyway, I've read over my spec
+1:10
+and I'm happy with it, nothing else
+1:12
+needs clarifying. So now I'm going to
+1:14
+move on to the planning stage. And for
+1:16
+this, we use the plan command. So
+1:18
+forward slash then plan. And then after
+1:20
+that command, we can add some details as
+1:22
+to how we want to plan this feature. So
+1:25
+this is the step where you'd outline any
+1:27
+technical implementation details like
+1:29
+maybe what CSS framework to use or a UI
+1:31
+component library or any other third
+1:33
+party service or API. Maybe you want to
+1:36
+use local storage or a particular state
+1:38
+management solution, a testing framework
+1:40
+or whatever else it might be. This
+1:42
+planning stage is the time to lay that
+1:44
+out. So then I'm just going to paste in
+1:47
+a little snippet right here that says
+1:49
+plan this using Tailwind at theme for
+1:52
+theme colors local storage for goals and
+1:55
+shard CN for UI components use date FNS
+1:58
+for date formatting no unit tests
+2:01
+integration test or E2E tests needed. So
+2:04
+this is pretty straightforward and you
+2:06
+might have more implementation details
+2:08
+than this for your own feature that's
+2:10
+fine but for what I want this is good
+2:12
+enough I think. Now, before we fire this
+2:14
+off, I'm going to close the chat window
+2:16
+and then take a quick look at the plan
+2:18
+prompt inside the specify folder over
+2:20
+here just so we can get a rough idea of
+2:22
+what it's going to do ahead of time. All
+2:24
+right, so inside this file then we can
+2:26
+see again that we tell the agent about
+2:28
+the user import after that plan command
+2:30
+and how it's stored in the arguments and
+2:32
+then it says given those details stored
+2:34
+in the arguments do the following. So,
+2:36
+first it tells the agents to run this
+2:38
+script setup plan. And that script,
+2:40
+which I'm going to quickly open now,
+2:42
+does a few things. Let me just find this
+2:44
+script inside the specify folder and
+2:46
+inside the scripts folder. And it's this
+2:47
+one right here, the setup plan. So then
+2:50
+I'm not going to walk through every line
+2:51
+again, but I just want to highlight a
+2:52
+couple of things right here. It uses a
+2:55
+common helper function defined in a
+2:57
+different script which grabs a bunch of
+2:59
+paths to different files and folders
+3:00
+such as the repo root, the current
+3:03
+branch name, the feature directory which
+3:05
+is the same as the branch name, uh the
+3:06
+feature spec file, etc. And it also
+3:08
+generates paths to new files in that
+3:11
+same feature directory that this
+3:12
+planning stage is going to write to.
+3:14
+Anyway, after that, it checks what
+3:16
+branch we're currently on to make sure
+3:18
+we're on a feature branch. And if not,
+3:20
+then we exit. Then somewhere down here,
+3:23
+it's going to copy the plan template
+3:25
+file from the templates folder into the
+3:28
+feature directory. And then finally,
+3:30
+it's going to output a bunch of stuff to
+3:31
+the terminal, which the AI model can
+3:33
+then use if it needs to. So that's the
+3:36
+main steps of this particular script for
+3:38
+the planning stage. And now, if we close
+3:40
+this and go back to the plan prompt
+3:41
+file, we can see that the next step is
+3:44
+to check for any unclarified areas of
+3:46
+the spec. And if there is then the
+3:48
+coding agent should pause and ask us
+3:50
+about those before we continue with the
+3:51
+plan. After that, step two is to read
+3:54
+and analyze the feature spec to
+3:56
+understand all these different things it
+3:58
+needs to know to make the plan. Step
+4:00
+three is to read the constitution file
+4:02
+so it knows about those essential
+4:04
+non-negotiable requirements. Then it
+4:06
+instructs the model to start work on the
+4:08
+plan file itself by essentially reading
+4:10
+through the plan template and executing
+4:12
+each stage in order. Now as part of that
+4:15
+it should make several files like a
+4:17
+research.mmptd file for any research it
+4:19
+needs to do and write down this could be
+4:21
+a research about best practices for
+4:23
+using certain technologies file
+4:24
+structure etc. It should make a data
+4:27
+model for any kinds of data we have in
+4:28
+the spec. In this case, for things like
+4:30
+the goals data. And it should make some
+4:32
+contract files for things like APIs we
+4:34
+need to use or any UI components it
+4:36
+needs to make. So that instead of the
+4:38
+coding agent going freestyle later, it
+4:40
+has these contracts as clear guidance
+4:42
+and boundaries as to what it can do. It
+4:45
+might also create a couple of other
+4:46
+files as well as it plans. But once it
+4:49
+does all that, it's told to verify its
+4:51
+own work by making sure everything in
+4:53
+this planning stage is completed. And
+4:56
+then finally, it reports the details
+4:58
+back to us in the chat window. And now
+5:00
+one more thing before we fire this plan
+5:02
+prompt off, let's just have a little
+5:03
+nosy at the plan template file, which is
+5:06
+inside the specified folder and then
+5:07
+within the templates folder. So I'm not
+5:10
+going to walk through this entire file
+5:12
+because it's far too long. But if we
+5:13
+scroll down a little bit, you're
+5:15
+basically going to see a list of steps
+5:17
+the coding agent needs to follow to fill
+5:19
+out this plan, do its research, make the
+5:21
+data models, the contract files, and
+5:23
+check its own work. And there'll
+5:25
+actually be a checklist of stuff it
+5:26
+needs to check off right at the bottom
+5:28
+of the file somewhere. So, we'll be able
+5:30
+to see at a glance when it's done all of
+5:32
+this stuff. And the AI itself will be
+5:34
+able to verify what it's done using this
+5:36
+as well. Also, when we ran the
+5:40
+constitution command earlier on, as well
+5:42
+as updating that constitution file, it
+5:44
+also updated the plan, I think, to
+5:46
+include any constitutional checks as
+5:48
+well, so that when it's making this
+5:49
+plan, the LLM has to make sure that
+5:52
+those constitutional constraints are
+5:54
+always applied to it. Anyway, let's
+5:56
+close this down now, open the chat back
+5:57
+up, and fire off the plant command with
+6:00
+our own input as well to get all of this
+6:02
+planning up and running.
+6:15
+All right. So, it's done all that and
+6:16
+you can see all of these different
+6:18
+files. It's either created or updated.
+6:20
+So, if we close these all off and take a
+6:24
+look at them one at a time. I'm not
+6:25
+going to go through everything because
+6:26
+there's far too much. But if we go down
+6:29
+to the specs folder, then inside this
+6:31
+one, you can see now we've got a bunch
+6:33
+of different files. We've got the planet
+6:34
+file plus all these other things like
+6:36
+data model, quick start, research. We've
+6:38
+still got the spec file. Then inside
+6:40
+here, contracts, we've got a goal
+6:41
+interface file as well. So if we just
+6:44
+open up the plan file first of all and
+6:47
+scroll down a little bit, we should see
+6:50
+somewhere. Yeah, we've got this
+6:52
+constitution check, right? So it's
+6:54
+basically saying that all of these must
+6:57
+pass, right? So clean code, simple UX,
+7:00
+responsive design, minimal dependencies,
+7:03
+no testing, all of these were outlined
+7:05
+in our constitution. So it's checked
+7:07
+that and made sure that all of these are
+7:11
+adhered to in the plan, which is good.
+7:13
+All right, you can go uh further down
+7:15
+here. We've got the information about
+7:17
+the project structure somewhere. There
+7:19
+it is. So source, then app, and then
+7:22
+we've got a components folder. So this
+7:24
+is what it's planning to do. It's not
+7:26
+created these yet. it's planning to do
+7:28
+this. So, we've outlined the different
+7:30
+uh UI components that we need, the
+7:32
+layout file, we've got a lib folder for
+7:35
+storage, date, utilities, etc. Then,
+7:38
+we've got a typed folder for the goal.
+7:40
+We've got a hook called use goals. Uh
+7:42
+then the public folder, etc. So, there's
+7:45
+a lot of planning in here. Again, I'm
+7:47
+not going to go through all of this, but
+7:48
+again, if we open up this file tree and
+7:51
+take a look inside the data model, then
+7:54
+you're going to see down here, we've got
+7:55
+the goal right here with these different
+7:57
+properties. So, it's outlining all of
+7:59
+the different properties a goal should
+8:00
+have like the ID, the title, the end
+8:03
+date, status, created at, completed at,
+8:06
+and it's also shown us in code what this
+8:09
+enum goal status should be. So, the type
+8:11
+of this should be an enum. So this makes
+8:14
+it really easy during the actual coding
+8:17
+stage I guess for the coding agent to
+8:19
+look at this and say oh this is how
+8:21
+we're going to structure this particular
+8:23
+type and it does this for a lot of
+8:26
+different things. We've got goals
+8:27
+collections uh we've got the different
+8:29
+operations we can perform on goals. So
+8:31
+it's outlining all of this stuff and
+8:34
+when we're generating the code later, it
+8:36
+can easily look at this as kind of like
+8:38
+documentation on how to implement these
+8:41
+different features and these different
+8:43
+data types. So this is really nice. If
+8:46
+we look inside the contract folder, we
+8:48
+can see we've got a goal interface as
+8:50
+well, which is fairly similar. It's
+8:52
+showing us all the different things we
+8:54
+can use, or rather different functions
+8:56
+we can use for a goal. Um, and some
+8:58
+different properties, I'm sure, as well.
+9:00
+some different rules. So we've got this
+9:02
+interface called goal card props as
+9:04
+well. So not only the goal itself, but
+9:06
+for components to do with the goal. It's
+9:08
+outlining the interface for the props.
+9:10
+So it's saying that we can pass in a
+9:12
+goal, which is a goal object. Then a
+9:14
+function called on complete and one
+9:17
+called on delete. Again, this is going
+9:18
+to make it much easier for the coding
+9:20
+agent later to actually create the code
+9:22
+because it has all this documentation in
+9:25
+place. What else have we got? We have
+9:27
+got a research file right here. So this
+9:32
+is basically when the model is looking
+9:35
+at its own kind of intelligence,
+9:37
+basically things that it's been trained
+9:39
+on. It's not going out onto the internet
+9:40
+unless we explicitly tell it to, but
+9:43
+it's using the knowledge that it already
+9:45
+has to make decisions about what
+9:47
+different things to use. So you can see
+9:49
+right here, I mean, we explicitly said
+9:51
+use Tailwind with the theme directive.
+9:53
+Um, but it goes through different
+9:55
+decisions and why it's using different
+9:58
+things for different features, etc.
+10:00
+Right here. Again, read this. Make sure
+10:02
+you're happy with everything in the plan
+10:05
+before you go ahead because the next
+10:08
+real step is to start making a task list
+10:11
+for the coding agent to use. So, we want
+10:12
+to make sure this plan is good enough
+10:15
+for that next step. All right. So now we
+10:17
+have the spec which is the highle
+10:19
+outline of the feature we're trying to
+10:21
+implement and we also have the plan now
+10:23
+which is a more technical outline of how
+10:24
+to implement that spec. The next step is
+10:27
+to turn the plan into a sequence of
+10:29
+actionable tasks and we'll do that in
+10:31
+the next video.
+
+
+=====
+
+
+0:01
+All right then. So far we have run four
+0:03
+commands. Constitution to outline some
+0:06
+foundational non-negotiable principles.
+0:08
+Specify to make a highle spec. Clarify
+0:12
+to clarify any ambiguities, edge cases
+0:14
+and whatnot in the spec. And then plan
+0:16
+to make a full detailed technical
+0:18
+implementation plan for the feature. The
+0:20
+next command we need to run is the tasks
+0:23
+command which takes the plan documents
+0:25
+and from those makes an actionable set
+0:27
+of tasks for the coding agent to work on
+0:30
+to implement that plan. All right. So in
+0:33
+the chat all we need to do is run the
+0:34
+tasks command without any additional
+0:36
+input because we've already made the
+0:39
+entire plan and this next step is just
+0:41
+about turning the plan into a series of
+0:43
+tasks for the AI model to follow. So
+0:45
+same as always before we run this
+0:47
+command I just want to close the chat
+0:48
+and take a quick look at the tasks
+0:50
+command prompt file to see what it
+0:52
+actually does. So let's open that file
+0:54
+up. Now inside this prompt we can again
+0:56
+see this arguments thing right here
+0:58
+which captures any user input after the
+1:00
+command. So you can offer some
+1:02
+additional input if you want to but so
+1:04
+far I've not needed to. But anyway, down
+1:06
+here it instructs the model to first of
+1:08
+all run this script which does a few
+1:10
+things to check the current feature
+1:11
+branch uh the planned documents paths
+1:14
+inside the feature folder etc. And that
+1:16
+script outputs those things to the
+1:17
+terminal so the agent can then use them
+1:19
+for the rest of these instructions. So
+1:21
+down here it tells the agent to read
+1:23
+those documents if they exist. Then it
+1:26
+has to generate the tasks using the
+1:29
+tasks uh template file which is inside
+1:31
+the templates folder. And it says to
+1:34
+replace the example tasks in that
+1:36
+template with the actual tasks based on
+1:38
+the following things.
+1:40
+It also outlines some task generation
+1:42
+rules down here as well, followed by
+1:44
+some guidance on how to order the tasks.
+1:46
+Then down here, it says group tasks
+1:50
+together using AP where they can be run
+1:53
+in parallel by the coding agent. And
+1:55
+then finally, where to create the new
+1:57
+task file. So that's the prompt for this
+1:59
+command. Fairly straightforward. Now,
+2:01
+let's close the file, open the chat back
+2:03
+up, and fire this command off.
+2:12
+Okay, so it looks like it's all done and
+2:14
+you can see we've got that new task file
+2:17
+right here, tasks.md. So, instead of
+2:19
+reading through this summary now, I'm
+2:20
+just going to go to the file that it
+2:21
+generated. This, by the way, is inside
+2:24
+the same specs folder, inside the
+2:25
+feature folder as well. So, right here,
+2:28
+we have a bit of information about it.
+2:30
+First of all, the import and then the
+2:32
+prerequisites. So these are the files
+2:33
+that it read the plan files and then we
+2:36
+have the branch name when this was
+2:37
+generated and the total number of tasks.
+2:40
+Now down here the execution flow this is
+2:42
+the instructions to the model to
+2:45
+actually create the tasks. They're not
+2:46
+the tasks themselves. So I'm going to
+2:48
+skip over those. And then down here are
+2:51
+the tasks. And they're split uh split up
+2:53
+into different phases. So 3.1 is setup,
+2:56
+then core implementation and so forth.
+2:59
+And each task has an identifier starting
+3:01
+with t01 all the way up to 22 I think.
+3:04
+So there's 22 tasks in total. So in this
+3:07
+setup phase then we can see the first
+3:10
+one is to install and configure shardn
+3:13
+and the second one is to install date
+3:15
+fns and the third one is to configure
+3:17
+tailwind css theme with pastel colors.
+3:19
+So these are very much setup tasks right
+3:22
+and then the core implementation is down
+3:24
+here. So we've got different layers as
+3:25
+well inside this core implementation. So
+3:28
+we've got the type definitions and
+3:30
+models all these tasks right here. So
+3:32
+the goal interface, local storage
+3:34
+service, etc. Down here we've got some
+3:36
+UI building blocks that it needs to
+3:38
+create. So the goal card component, the
+3:39
+goal form, modal component, etc. Then
+3:42
+we've got some business logic down here,
+3:43
+which is phase 3.3.
+3:46
+So that includes things like making that
+3:47
+custom hook, all the logic that goes
+3:49
+into that, the goal creation logic,
+3:51
+completion logic, etc. Then we've got
+3:54
+integration and layout. So everything
+3:57
+we've done so far, all the components
+3:58
+we've made, the hooks, it's kind of
+4:00
+putting it all together into the
+4:02
+different pages and the layouts right
+4:03
+here. And then finally, we have this
+4:06
+phase 3.5, which is the polish stage. So
+4:09
+it adds visual highlighting for urgent
+4:11
+goals. Basically, some final touches.
+4:14
+All right. And down here, we have some
+4:16
+sequential dependencies. So it's
+4:17
+basically saying that certain things
+4:19
+have to be done before other things. So
+4:21
+it knows the order to do these in. And
+4:24
+down here, if we go down here, right to
+4:26
+the bottom, these are different bash
+4:27
+commands it can run. But we've got some
+4:29
+different details for all of the
+4:31
+different tasks. And down here, there
+4:35
+should be no, there's none. Oh, yeah,
+4:36
+there it is. So, the constitutional
+4:38
+compliance. So, it's basically saying
+4:40
+here that it's looked at the
+4:42
+constitution file as well, and it's re
+4:44
+reiterating no automated testing tasks
+4:47
+were included. All verification is
+4:49
+manual. All right. So that's good
+4:51
+because I don't want any tasks creating
+4:54
+for this. So we have the task list now
+4:57
+and that means in the next lesson we can
+5:00
+go ahead and start implementing these
+5:01
+tasks. However, there is one more
+5:03
+optional um command that we can run
+5:06
+first of all which we're going to do and
+5:07
+that is the analyze command. So, we'll
+5:09
+see that next.
+
+
+
+=====
+
+
+
+0:00
+All right then. So now we've run the
+0:02
+tasks command to make a kind of road map
+0:04
+of things the coding agent needs to do
+0:06
+to actually implement the feature. So
+0:08
+we're almost at the point of telling
+0:09
+copilot to do exactly that. But there's
+0:11
+also this optional analyze command that
+0:13
+we can run around about now which
+0:14
+analyzes all the artifacts created so
+0:17
+far. So the constitution, the spec file,
+0:19
+the plan files, etc. And it analyzes the
+0:21
+files for any inconsistencies where
+0:23
+there might be conflicting information
+0:25
+or any ambiguities or coverage gaps,
+0:27
+those kinds of things. So, it's like
+0:30
+someone taking a final glean over
+0:31
+everything done so far, just to make
+0:33
+sure we're absolutely ready to start
+0:34
+running the tasks. Okay, so before we
+0:37
+run this analyze command, I thought we'd
+0:39
+just take a very quick look at the
+0:40
+prompt file first of all, just to see
+0:42
+what's actually happening under the
+0:44
+hood. So, I've already got that file
+0:46
+open right here, and we can see right
+0:47
+away that again, it takes in the user
+0:49
+input as the argument. But in the case
+0:52
+of this analyze command, unless there's
+0:53
+any specific guidance you want to give
+0:55
+to the model, we don't really need to
+0:57
+pass anything. At least I've not found
+0:58
+so in my experience. So then down here
+1:01
+we can see the goal of this instruction
+1:03
+is to identify any inconsistencies,
+1:05
+duplications, ambiguities, etc. It also
+1:08
+says that this is strictly a read only
+1:11
+action. So the coding agent won't be
+1:13
+making any changes to the code. It's
+1:15
+just going to analyze it. And then it
+1:17
+also mentions the constitution file down
+1:19
+here as well. And it tells the agent to
+1:21
+flag any conflicts with that
+1:23
+constitution in any of the other
+1:25
+artifacts.
+1:26
+We've also got a full breakdown of the
+1:29
+different steps down here, starting with
+1:30
+this script, which essentially grabs the
+1:33
+feature directory and all the available
+1:35
+documents in that directory. And then
+1:38
+once the model has those, it can follow
+1:40
+the rest of the steps down here as well
+1:41
+to analyze them. Now, I'm not going to
+1:43
+walk through this whole prompt file
+1:45
+right now because it's a long one and
+1:46
+that would take ages, but it generally
+1:49
+asks the agent to flag any issues and
+1:51
+report them back to us in a table format
+1:54
+within the chat. All right, so let's
+1:56
+give this a whirl. Let's close that down
+1:58
+and open up the chat again and make sure
+2:00
+we're in agent mode. And then we're
+2:02
+going to say forward slashanalyze.
+2:04
+In fact, I think it could be in ask mode
+2:06
+this because it's not going to change
+2:08
+any of the content. It is just reading
+2:10
+them all and making sure everything
+2:11
+looks correct. But anyway, we're going
+2:13
+to press enter now and see what this
+2:15
+does.
+2:16
+[Music]
+2:22
+All right, so it looks like this is all
+2:24
+done. I'm going to make this bigger so
+2:25
+we can read it properly. And I'm going
+2:27
+to go up to the very top. I'm not going
+2:28
+to read all this because it spat out an
+2:30
+absolute ton of stuff. But this is where
+2:33
+it finished. So we can see right here
+2:35
+the executive summary analysis completed
+2:37
+for doit goal tracking gap across
+2:39
+spec.md
+2:41
+and tasks.mmd.
+2:43
+No critical constitutional violations
+2:45
+found. So that's good. Everything we put
+2:47
+in the constitution file has been
+2:48
+adhered to. The artifacts demonstrate
+2:51
+strong alignment with constitutional
+2:53
+principles and comprehensive coverage of
+2:55
+requirements. All right, good. So, we've
+2:58
+got this table here, which is quite
+2:59
+nice. And you can see, let me make this
+3:02
+a little wider. We've got an ID for each
+3:04
+of these items, I suppose. And we've got
+3:07
+a category. So, this is an ambiguity.
+3:10
+The severity is medium inside spec. MD.
+3:13
+And it even says which functional
+3:15
+requirement. And it says fun pastel
+3:17
+colors lacks specific color values.
+3:19
+Define specific color palettes in the
+3:22
+plan or defer to a div uh design phase.
+3:25
+So yeah, I mean I guess I could have
+3:26
+provided actual colors. Um but I would
+3:29
+just be happy to leave that to the AI to
+3:31
+do later on. It doesn't bother me if
+3:32
+they choose pink or green or whatever.
+3:34
+I'm really not interested. So the second
+3:36
+one is an ambiguity again inside pland
+3:39
+this uh this time and it says the fast
+3:42
+initial load smooth interactions is not
+3:45
+quantified. Okay, so it wants some kind
+3:47
+of measurable target. Again, I'm not
+3:49
+really concerned with that at the
+3:50
+minute. This is a throwaway app. But if
+3:52
+we wanted to solve these ambiguities, we
+3:54
+could do so. Right now, down here, we've
+3:56
+got some inconsistencies, or rather just
+3:59
+one. And the severity this time is low.
+4:01
+It's in the tasks file, and it's T02
+4:05
+versus 06. And it says right here, date
+4:08
+utils.ts referenced in both tasks.
+4:12
+clarify T002 focuses on installation and
+4:16
+T006 on utilities. So I would have to
+4:19
+have a look at that. It does say it's a
+4:20
+low severity. So I think that the AI
+4:23
+would be capable of figuring this out.
+4:26
+Then we've got under specification right
+4:28
+here inside the tasks file from task 11
+4:31
+to 13. So it says the business logic
+4:33
+tasks lack specific file paths. Add file
+4:37
+paths, use goals.ts or separate service
+4:40
+files. So again, I would have to have a
+4:42
+look at that and I could add them in if
+4:43
+I wanted to, but again, you know, AI
+4:46
+models are smart and if they need to
+4:48
+find a file, a lot of the time they will
+4:51
+just do it. And then finally, we've got
+4:53
+this coverage gap for FR015
+4:56
+that is a low priority and is to do with
+4:59
+the local storage error handling. No
+5:01
+specific task for error message
+5:03
+implementation. And we should according
+5:05
+to this add a task for local storage
+5:08
+error UI component. So yeah, I mean we
+5:10
+could do that.
+5:12
+So we've got a coverage summary table
+5:14
+right here as well. So all these key
+5:16
+requirements have tasks. The only one
+5:19
+that doesn't by the look of it is this
+5:20
+thing which we just saw up here. So this
+5:23
+coverage gap is also listed here, local
+5:25
+storage error handling. Okay, so it's
+5:27
+flagged it there. The constitutional
+5:30
+alignment analysis says that it's
+5:32
+compliance. So the clean code principle
+5:35
+is specified in the tasks blahy blahy
+5:38
+blah simple UX responsive design
+5:40
+principle. So all of these things have
+5:42
+been hit which is good especially at
+5:44
+this one right here because if we had a
+5:45
+lot of testing in place it would take a
+5:48
+long time to do. So down here we've got
+5:51
+some metrics. So total requirements 19
+5:54
+functional requirements we have 22
+5:56
+implementation tasks a coverage of
+5:59
+almost 95%
+6:01
+and we have two ambiguities
+6:04
+and down here we've got some more
+6:05
+detailed findings. We've got basically
+6:07
+just the different issues again.
+6:10
+So the next actions it says proceed with
+6:13
+the implementation. So even though we've
+6:15
+got those small ambiguities it's still
+6:18
+advising that we just proceed with the
+6:20
+implementation. So, we could do these
+6:23
+improvements if we wanted to, but again,
+6:25
+we don't have to. So, if we scroll right
+6:28
+down, it says, "Would you like me to
+6:30
+suggest concrete remediation edits for
+6:32
+the top three issues?" So, we could do
+6:35
+that if we wanted to. We could go in, we
+6:37
+could edit all of these files. I don't
+6:40
+really want to do that. I just wanted to
+6:41
+show you that we can analyze these
+6:43
+files. If there's anything in your
+6:45
+analysis that you want to change in the
+6:48
+plan or the spec, you could do it now
+6:50
+and in the tasks before you go ahead and
+6:52
+implement those tasks in the next
+6:54
+lesson.
+
+
+=====
+
+
+
+0:00
+So then my friends, we have run every
+0:02
+command so far except the final one
+0:04
+which is the implement command. And this
+0:06
+is the command that actually takes that
+0:08
+task list, runs through each one and
+0:10
+implements them. So this is the first
+0:12
+time we'll be instructing the model to
+0:14
+actually generate working code for the
+0:16
+project. And I know this has been a
+0:18
+fairly long and drawn out process to get
+0:20
+here, but keep in mind that we've also
+0:21
+run two optional commands along the way,
+0:24
+the clarify and analyze ones. And we've
+0:26
+run the constitution command as well,
+0:28
+which typically we won't need to do
+0:30
+every time we have a new feature. Plus,
+0:32
+I've been recording this whole process
+0:33
+and explaining certain things along the
+0:35
+way. So, in reality, it would be much
+0:37
+quicker to implement new features.
+0:40
+Anyway, let's go ahead now and use this
+0:42
+final implement command. All right, so
+0:45
+before we ask the model to go ahead and
+0:47
+implement all those tasks, I just want
+0:49
+to switch to a brand new chat session.
+0:52
+And the reason I'm doing that is because
+0:53
+in this other one, we have done
+0:54
+everything so far. We've done the
+0:56
+constitution. We've done the spec, the
+0:58
+planning, the clarifying, the analyzing,
+1:01
+building the task list, and we've built
+1:03
+up one hell of a chat history. And all
+1:06
+that is in the context window. Now, I
+1:08
+found that when the chat history gets
+1:10
+bloated and you've got a lot of context
+1:12
+in the window, then it becomes harder
+1:14
+for the AI to stay on track later on to
+1:17
+implement these tasks. That's just my
+1:19
+experience. It might not be for you, but
+1:21
+I want to create a new chat for
+1:23
+implementing the tasks. So, I'm going to
+1:26
+make sure agent is selected. I'm also
+1:28
+going to choose Claude Sonic 4.5, which
+1:30
+is a fairly fe uh recent release. And
+1:32
+I'm just going to give this a whirl. And
+1:33
+then we're going to use the implement
+1:36
+command like this. Now, if you wanted
+1:38
+to, you could add some user input. I
+1:41
+think pretty much all of these accept
+1:43
+user input. If we open this, we can see
+1:45
+the user input is the arguments. But
+1:47
+again, I've seen no reason to really
+1:49
+give it any input when I've been using
+1:51
+it so far. If you've come up with a
+1:53
+reason to do this, please let me know in
+1:54
+the comments. Anyway, down here,
+1:57
+basically, it's a prompt to tell the
+2:00
+coding agent to go through all of the
+2:02
+tasks and execute each one. So, let's
+2:05
+press enter over here and see if it does
+2:07
+it correctly. And I'm just going to
+2:08
+click on enable for this new model right
+2:10
+now.
+2:14
+So, right now, you can see that it's
+2:16
+created these 22 to-dos. So, we have 22
+2:18
+tasks, right? And it's created a to-do,
+2:20
+I think, for each one of those to keep
+2:22
+track of them. The first one was to
+2:24
+install Shard CNN, which it's just asked
+2:27
+me to do, and I've just said, "Yeah, you
+2:28
+can go ahead and do that."
+2:31
+[Music]
+2:36
+All right, then. So, it's all done now.
+2:37
+And if we scroll up here to where it
+2:39
+finished, it says, "Implementation
+2:41
+complete. Tick. I've successfully
+2:44
+executed all 22 tasks from the
+2:46
+implementation plan from the uh for the
+2:48
+do it goal tracking app. So this is what
+2:50
+we accomplished the setup phase. We've
+2:52
+done all these tasks, all these ones as
+2:54
+well. It's just letting us know it's
+2:55
+done everything basically. So if we
+2:57
+scroll right down, we get big checks
+2:59
+next to all of these different features
+3:01
+as well. It's also started the dev
+3:03
+server for me as well, which is nice. So
+3:04
+I can go ahead and check this out in a
+3:06
+browser. Before we do that though, I'm
+3:08
+going to take a very quick look at the
+3:09
+different files it's added. So let me
+3:11
+close all these. Open up the explorer
+3:15
+and let's have a look inside source. So
+3:18
+in app, well, it's changed these two
+3:20
+files. The globals.css. So we've got all
+3:22
+these different theme colors. And then
+3:24
+in the page, we have the goals list
+3:28
+hopefully somewhere. Do we have that?
+3:31
+Yeah. Okay. So the goals are down here.
+3:33
+This is the goals list component. And
+3:35
+we've got another goal list component as
+3:37
+well. These are for the completed goals,
+3:39
+I guess, and these are for the active
+3:40
+goals. All right. Cool. So, it's using
+3:42
+the same component for both lists, even
+3:44
+though some are going to be displaying
+3:46
+differently on the right. That's uh
+3:48
+that's nice. Let's have a look at that.
+3:50
+So, the goal list is right here.
+3:54
+So, we're taking these props, the goals,
+3:56
+uh the title, and these functions as
+3:58
+well. And then we output each goal in a
+4:02
+goal card. All right. We also add this
+4:04
+text if there's no goals in the list as
+4:06
+well, which is good. Let's have a look
+4:07
+at the goal card.
+4:09
+These are the props the goal itself. Um,
+4:13
+okay. Days remaining. So, we are going
+4:14
+to show when the end date is is urgent.
+4:17
+Okay. Yeah. So, I think I said that when
+4:19
+it reaches the end date or within 3 days
+4:21
+of the end date or something like that,
+4:23
+then we should highlight it. So, I guess
+4:25
+that's what this is doing. If we scroll
+4:28
+down here, yep, we conditionally apply a
+4:30
+different class if it is urgent to
+4:32
+highlight it. Good. All right. So, we've
+4:34
+got these different bits of template
+4:36
+down here. We've got a button for
+4:38
+completing, for deleting, for
+4:40
+cancelling. All right. Yes. So we have a
+4:42
+checkbox
+4:46
+which if we check
+4:50
+unchecked. So handle checkbox change.
+4:52
+Let's see what this does.
+4:55
+Show uh set show choice. And then down
+4:58
+here. Ah I see.
+5:01
+Yeah. So next to each goal then there
+5:04
+should be a check box. And when we tick
+5:05
+that checkbox, it then shows these
+5:08
+options. So what we want to do with that
+5:10
+particular goal. So we can either
+5:12
+complete it, we can delete it, or cancel
+5:14
+the action. All right. Yeah, that's
+5:16
+good. Okay. So that is the goal
+5:18
+component. We've got a form to add a new
+5:20
+goal. So yeah, we're inputting a title,
+5:23
+an end date. These are form errors, I
+5:25
+presume.
+5:27
+All right.
+5:28
+Dialogue. Yeah. I mean, I'm not going to
+5:30
+go through every line of code. It seems
+5:32
+to look okay. There's the goal list
+5:34
+which we've seen UI components. So the
+5:36
+button and
+5:40
+we have the checkbox, the dialogue, the
+5:42
+input. Okay, so it's made a custom input
+5:44
+as well. All right, what else have we
+5:47
+got? Have we got any hooks? Yes, we have
+5:49
+hooks down here. We should have one for
+5:50
+use goals and we have some goal state is
+5:54
+loading. Um, clean up overdue goals.
+5:59
+What's it doing?
+6:02
+All right. So, we're creating a goal. Do
+6:04
+we have anything to do with local
+6:05
+storage here?
+6:08
+Let's have a look. Delete goal. Set
+6:11
+goals. Was deleted. Was deleted.
+6:15
+I mean, I'm not seeing it. However, it
+6:19
+might be elsewhere. Let's have a look in
+6:20
+the lib folder. Storage. Okay. So, these
+6:24
+functions load goals. Ah, these were
+6:26
+being used in this file, weren't they?
+6:29
+If we go up here.
+6:32
+Yeah. So load goals and save goals we
+6:35
+used inside this file to load and save
+6:37
+goals and they are coming from this file
+6:39
+the storage one which is using local
+6:41
+storage. Awesome. So we are persisting
+6:43
+the goals in local storage and then we
+6:46
+have this final one which is just a
+6:48
+utility function for TWIN merge. All
+6:51
+right. Cool. Yeah. So this looks all
+6:53
+pretty good. Again I've not gone through
+6:54
+this thoroughly. I would do if I was
+6:57
+working on not a throwaway project. But
+7:00
+now what I'd like to do is view this in
+7:01
+the browser. All right. So, moment of
+7:03
+truth. Does it all work? Now, first
+7:06
+impressions, it does look basic, but
+7:08
+I've not really given it any specific
+7:10
+design instructions, so I can't blame it
+7:13
+for that. I'm going to click on this to
+7:14
+see if this works because we have no
+7:16
+goals in either column yet. So, add
+7:18
+goal. Um, okay, that's nice. It's given
+7:20
+us a little hint right there as well.
+7:21
+Learn TypeScript. I'm going to say
+7:23
+finish this series. And then let's give
+7:27
+an end date of I don't know in like 3
+7:30
+days time. Add the goal. And yeah, it
+7:32
+says right here 3 days left. Cool. We've
+7:35
+got this little check box right here as
+7:36
+well. So I think this is going to be the
+7:39
+urgent goal because it's red. Let's add
+7:41
+another goal with a date further in the
+7:43
+future. We'll just be like buy milk or
+7:46
+something. And then not much of a life
+7:48
+goal, is it? 25th. Add goal. Okay. Yeah.
+7:52
+So when we are within 3 days or it could
+7:55
+be 5 days, I don't know, we get the goal
+7:57
+styled a little differently. That shows
+7:58
+that this is an urgent goal. Let's try
+8:01
+and complete something. All right, cool.
+8:03
+So when we check this or click on it, we
+8:05
+don't see a check icon, by the way, do
+8:08
+we? We just click it and we don't see
+8:10
+it. That might be to do with the
+8:12
+styling. Is it checked?
+8:15
+Um data slot.
+8:19
+All right. So, no, we don't see one. I
+8:22
+would have to look at that. I'm not
+8:23
+going to do that in this series. The
+8:25
+functionality is working, but we can
+8:27
+either delete that, cancel it, or mark
+8:29
+as complete. Let's do that. All right.
+8:31
+Cool. Yeah. So, it goes over to the
+8:33
+right. Now, what I'm going to do is
+8:34
+refresh the page because now these
+8:37
+should be stored in local storage,
+8:39
+right? So, we should see these when we
+8:40
+load it again. Yeah. Awesome. We do.
+8:44
+Okay. So, if I click on this again, we
+8:46
+don't see the tick, but we can delete
+8:48
+these as well. And that works. Awesome.
+8:51
+Now, I just want to try one more thing
+8:52
+because I noticed in the globals.css
+8:56
+file, it created a load of dark theme
+8:57
+colors, but we don't see any dark theme
+9:00
+over here. And that's good because I
+9:01
+didn't ask it to do that, but it created
+9:02
+the colors. I want to see what happens
+9:05
+if we come to the body tag. I'm going to
+9:07
+edit this and just give it a class of
+9:10
+dark. Now, I'm not expecting this to
+9:12
+work, but we shall see. Oh, it does.
+9:16
+Okay, cool. So, that looks pretty nice.
+9:19
+We have a dark theme as well.
+9:20
+Everything's dark. Let's say finish this
+9:23
+series again. And we'll give this an end
+9:25
+date, which is pretty soon, to see what
+9:28
+that highlighted goal looks like. Add
+9:30
+goal. Okay, it's still red. Yeah, I
+9:33
+mean, I'm pretty happy with this. We've
+9:35
+got a dark theme, we've got a light
+9:36
+theme. Uh, we can delete this. Awesome.
+9:40
+Okay. So, I don't know what you think,
+9:41
+but I think using SpecKit and those
+9:43
+different stages to spec out the new
+9:46
+feature, plan it, create the tasks, and
+9:49
+all those other things, I think that's
+9:50
+kept the AI model on track a lot more.
+9:52
+If I tried to do something like this
+9:54
+without Spec Kit, even though it's quite
+9:56
+simple, I would still find myself going
+9:59
+back to the AI quite frequently, saying,
+10:01
+can you change this? Can you do this?
+10:03
+Can you do this? And then maybe
+10:05
+reverting some changes as well,
+10:06
+sometimes scrapping it and starting it
+10:08
+again. And I think using those different
+10:10
+stages with SpecKit has definitely kept
+10:13
+it on track to create this feature. Next
+10:16
+up, then we'll try and do all of this
+10:18
+again, but we're going to condense this
+10:20
+into a much smaller video to add another
+10:23
+feature.
+
+
+======
+
+
+
+0:00
+All right then my friends. So now we've
+0:01
+used spec kit to implement a complete
+0:03
+feature all starting with that original
+0:05
+highle spec. And the cool thing about
+0:07
+that spec is that you can reuse it with
+0:09
+a different plan task list and
+0:10
+implementation. For example, if I wanted
+0:12
+to make a similar kind of feature using
+0:15
+a different stack or database instead of
+0:17
+local storage, then I could use that
+0:19
+spec file again for that because it
+0:21
+doesn't contain any implementation
+0:23
+details, only the required features from
+0:25
+a user perspective. Anyway, like I said
+0:28
+at the start of this series, I think
+0:29
+SpecKit works well with existing
+0:31
+projects to implement new features. So,
+0:33
+I could walk through this whole process
+0:35
+again if I wanted to to add another
+0:37
+feature to the application. So, what I'm
+0:40
+going to do now is run through this
+0:41
+cycle again to implement a new feature.
+0:43
+And that feature is going to be to make
+0:44
+it so the goals can be reordered by
+0:46
+dragging and dropping them up and down.
+0:49
+But this time, I'm going to run through
+0:50
+this much quicker and speed up a lot of
+0:52
+the AI work and checking of the
+0:54
+documents so that I can condense this
+0:55
+into a 10-minute video or thereabouts.
+0:58
+So, I've already merged that previous
+1:00
+feature branch into the main branch on
+1:02
+GitHub, and I've pulled down those
+1:03
+changes into my local repo, so
+1:05
+everything's up to date. Now, I'm going
+1:07
+to start with a new spec. I don't need
+1:09
+to change the constitution or anything
+1:11
+because there's no change in the
+1:12
+grounding principles of the app. So, we
+1:14
+can skip that part and we'll jump
+1:16
+straight to the specify command. And I'm
+1:18
+going to paste in the following input.
+1:20
+Drag and drop. So those three words
+1:22
+right there are going to be the branch
+1:23
+name, remember? Then it says, let's make
+1:26
+it so that the users can reorder goals
+1:28
+by dragging and dropping them above or
+1:30
+below other goals in the list. So this
+1:33
+is quite a simple, straightforward bit
+1:34
+of information. And once it's made the
+1:36
+spec, we'll use the clarify command to
+1:38
+fill in any gaps.
+1:44
+All right, then. So, it's created that
+1:46
+spec file. And also notice this. We've
+1:48
+gone to a new branch 0002 this time. So,
+1:52
+it's detected we've already got a
+1:53
+feature 001. It's gone one up to two and
+1:56
+it's called it drag and drop. And we've
+1:58
+got that new spec file inside that
+1:59
+folder. And that's all inside the specs
+2:01
+folder as well. Okay. So, right here
+2:03
+we've got the user input inside this
+2:04
+file. Uh the dates. We've also got the
+2:07
+execution flow which remember is how the
+2:09
+coding agent creates this file. Let's
+2:12
+scroll down here and we should
+2:14
+eventually reach the acceptance
+2:16
+scenarios and the primary usery story.
+2:19
+So, as a user managing my goals, I want
+2:21
+to reorder my goal list by dragging and
+2:23
+dropping goals to different positions so
+2:24
+that I can prioritize my goals according
+2:26
+to my current needs and preferences
+2:28
+blahy blahy blah. Okay, so these are the
+2:30
+acceptance scenarios which we could read
+2:32
+through. I'm going to try and keep this
+2:33
+quick so I'm going to skip a lot of
+2:35
+this. We've got some edge cases right
+2:36
+here as well which we might come across
+2:38
+if we clarify in a moment. And then all
+2:41
+the functional requirements from one to
+2:43
+10. So there is quite a lot. So it says
+2:45
+system must allow users to initiate a
+2:47
+drag operation by clicking and holding
+2:50
+in a goal. What's the last one? Let's
+2:52
+have a look. System must preserve the
+2:53
+order position of a goal even after it's
+2:56
+marked as complete or uncompleted.
+2:58
+All right. So I'm pretty happy with this
+3:01
+spec. So the next stage is to move on to
+3:03
+the clarify command. Let's open this
+3:06
+back up and say forward slashclarify
+3:09
+to do that. and press enter.
+3:14
+Okay then. So the first question and the
+3:17
+category is interaction and UX flow edge
+3:19
+case handling. When dragging a goal near
+3:21
+the top or the bottom of the edge of a
+3:23
+scrollable goal list, what should
+3:25
+happen? So auto scroll list
+3:27
+automatically scrolls when dragging
+3:29
+within 50 to 100 pixels of the top and
+3:32
+bottom edge. Ah, I see. So when you drag
+3:34
+it down and the list still goes on, it
+3:36
+should start to scroll. Okay. Yeah, I
+3:38
+think option A for that. So let's press
+3:39
+A.
+3:42
+Okay. So question two. When a user
+3:44
+creates a new goal, where should it
+3:46
+appear in the goal list by default? So
+3:48
+top of the list, bottom, or after
+3:50
+current selection? I think just top of
+3:52
+the list. Let's keep that simple. Go
+3:53
+with A again.
+3:57
+All right. So next one. What visual
+3:59
+state should the goal card have while
+4:01
+being dragged? So, semi-transparent
+4:03
+ghost uh placeholder plus preview the
+4:07
+full opacity clone or minimal indicator.
+4:09
+So, a small icon H.
+4:13
+I think this one here, semi-transparent
+4:15
+ghost. A lot of the time you'll find
+4:17
+that A is the option you go for because
+4:19
+it's the most realistic or the most
+4:21
+common option. So, I'm going to go for A
+4:23
+again.
+4:25
+Okay. So, next question. How should the
+4:27
+system show where the dragged goal will
+4:29
+be inserted? So we have a horizontal
+4:32
+insertion line. Highlight the target
+4:34
+goal. Gap spacing.
+4:37
+Yeah, I quite like that option. So if we
+4:39
+drag into a new space, it kind of makes
+4:40
+a gap there where it could go. So let's
+4:44
+go with C for this one.
+4:47
+Okay. And then final question. Since
+4:49
+FR10 requires keyboard accessibility,
+4:52
+what keyboard interaction should allow
+4:54
+reordering rather without drag and drop
+4:57
+arrow keys plus modifier? Uh cut and
+5:00
+paste context menu. Um
+5:04
+I'm just going to go with D because I
+5:06
+don't want to make this overly complex.
+5:08
+So we'll skip that for now.
+5:11
+All right. So now it's recorded all of
+5:13
+those answers, added them to the spec.
+5:15
+I'm happy with those changes, so I'm
+5:17
+going to keep them. Okay. Okay, so now
+5:19
+we've got the spec. We can go ahead and
+5:20
+plan this by using the plan command. And
+5:23
+then I'm also going to paste in the
+5:24
+following input. Plan this using the
+5:27
+sortable library for sorting list items
+5:29
+and tailwind for styling. No testing
+5:32
+whatsoever again. So very simple and I'm
+5:35
+reiterating the desire not to test
+5:38
+because this is a completely throwaway
+5:41
+project. We don't need unit tests or
+5:43
+integration tests or anything like that.
+5:45
+It's completely overkill for this demo.
+5:47
+But by all means, keep them in if you're
+5:49
+working on an enterprise app or if you
+5:51
+need them. Okay, so let's fire this off
+5:53
+then.
+5:55
+[Music]
+6:00
+Okay, so it looks like it's all done now
+6:02
+and it's given me a pretty extensive
+6:04
+summary including all the documents it's
+6:07
+created down here for the plant,
+6:08
+including these contracts as well. It's
+6:09
+created quite a lot. And up here we have
+6:13
+all of the constitution compliance. We
+6:16
+have up here
+6:19
+um the architecture information. So some
+6:21
+technical decisions it's made about the
+6:22
+architecture, the project context, and
+6:25
+this was something I meant to add into a
+6:27
+previous video. If you're using
+6:29
+something like Copilot that uses
+6:31
+instruction files or I think in Claude
+6:34
+it's a claw.md file. Um a lot of agents
+6:37
+are taking on the agents MD file as well
+6:40
+as like a standard. So if you have any
+6:42
+of those then specit is going to include
+6:45
+instructions to update those agent files
+6:49
+as needed. So if we take a look over
+6:50
+here inside the GitHub folder you can
+6:52
+see we've got this copilot instructions
+6:53
+file now and it's updated that based on
+6:56
+our project and you can add your manual
+6:59
+additions to the file here as well. All
+7:01
+right. So, I'm not going to read through
+7:04
+all of the planning, but you can see at
+7:05
+a glance it's created quite a lot of uh
+7:09
+files for this particular feature. All
+7:12
+right. So, I'm going to trust what it's
+7:14
+done is correct. I wouldn't advise doing
+7:16
+that if you're working on a serious
+7:18
+project. Always read through these
+7:20
+things. I just want to carry on going
+7:21
+now to get this done for this lesson.
+7:23
+So, I'm going to keep all of those
+7:24
+changes.
+7:26
+And now I'm going to close all of these
+7:28
+files because I want to run the tasks
+7:31
+command next to turn this into a list of
+7:34
+tasks.
+7:36
+[Music]
+7:41
+Okay, so at this point we're pretty much
+7:43
+ready to start implementing this new
+7:45
+feature. And now if we wanted to, we
+7:47
+could run the analyze command again to
+7:49
+make sure everything checks out. But for
+7:50
+the sake of this video, we're going to
+7:52
+skip that command and jump right into
+7:54
+the implement one by typing forward
+7:56
+slashimplement and then hitting enter.
+8:01
+[Music]
+8:08
+All right, then. So, moment of truth.
+8:10
+Let's try dragging these. And yeah, that
+8:12
+seems to work. We can drag these up and
+8:14
+down. The style of this looks okay. If
+8:16
+we refresh, well, we don't get the same
+8:18
+order that we rearrange to. It's just
+8:21
+for the current session, I guess. If we
+8:23
+refresh again, then yeah, it goes back
+8:26
+to the original uh order. So, they're
+8:28
+not stored in local storage. We could
+8:30
+add that in the future if we wanted to,
+8:32
+but I think on the whole, I am pretty
+8:34
+happy with this. Okay, then. So
+8:37
+hopefully now you've got a decent
+8:38
+understanding of what specit is and how
+8:40
+it can be used to more effectively use
+8:42
+coding agents to implement features into
+8:45
+your applications with this whole spec
+8:47
+first approach. Now it is new and it's
+8:49
+constantly being developed and worked
+8:51
+on. So new features are always being
+8:53
+added and you can keep up with those new
+8:55
+features by checking out the GitHub repo
+8:57
+which I will leave a link to down below
+8:59
+the video. Also, if there's any really
+9:01
+significant new features or updates,
+9:03
+I'll make sure to add a new video to the
+9:05
+end of this series as well. So, then my
+9:07
+friends, I really, really hope you
+9:09
+enjoyed this series and you learned
+9:10
+something along the way. If you did,
+9:12
+please, please, please don't forget to
+9:14
+share, subscribe, and like, that really
+9:15
+means a lot. And if you want to access
+9:18
+all of my YouTube courses without
+9:20
+adverts, also get access to premium
+9:22
+courses and early access courses as
+9:24
+well, you can do at netinja.dev.
+9:27
+You can sign up for Net Ninja Pro, which
+9:29
+is just $9 a month and also half price
+9:32
+for the first month with this promo code
+9:35
+right here. And for that, like I said,
+9:37
+you get access to every course without
+9:39
+adverts, without YouTube adverts. You
+9:41
+also get access to exclusive courses not
+9:44
+found anywhere else. You get access to
+9:46
+my premium courses on Udemy and also
+9:49
+early access to all of my YouTube
+9:51
+courses as well. So, the link to this
+9:53
+page to sign up is going to be down
+9:55
+below. Again, I really hope you enjoyed
+9:57
+this series and I'm going to see you in
+9:59
+the very next one.
+10:18
+Heat. Heat.
+10:31
+[Music]
