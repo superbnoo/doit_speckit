@@ -4,7 +4,7 @@ theme: default
 paginate: true
 backgroundColor: #ffffff
 color: #333333
-footer: "© Zühlke 2025 &nbsp;&nbsp;&nbsp;&nbsp; Spec-Driven Development with SpecKit"
+footer: "© Zühlke 2026 &nbsp;&nbsp;&nbsp;&nbsp; Spec-Driven Development with SpecKit"
 style: |
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
   section {
@@ -30,8 +30,8 @@ style: |
     margin-bottom: 16px;
   }
   section.lead {
-    background: #6b2d7b;
-    color: #ffffff;
+    background: #6b2d7b !important;
+    color: #ffffff !important;
     text-align: left;
     padding: 60px 80px 80px 80px;
     display: flex;
@@ -41,24 +41,48 @@ style: |
   section.lead h1 {
     font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
     font-size: 32pt;
-    color: #ffffff;
+    color: #ffffff !important;
     border-bottom: none;
     margin-bottom: 8px;
   }
   section.lead h2 {
     font-size: 18pt;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.85) !important;
     font-weight: normal;
     margin-bottom: 24px;
   }
   section.lead p {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.75) !important;
     font-size: 14pt;
   }
-  section.lead footer {
-    color: rgba(255, 255, 255, 0.5);
+  section.lead strong {
+    color: #ffffff !important;
   }
-  section.lead img.logo {
+  section.lead code {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+  section.lead pre {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-left-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  section.lead pre code {
+    color: #ffffff !important;
+  }
+  section.lead blockquote {
+    border-left-color: rgba(255, 255, 255, 0.4) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+  section.lead a {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  section.lead footer {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  section.lead::after {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  section.lead img {
     position: absolute;
     top: 30px;
     right: 40px;
@@ -120,20 +144,23 @@ style: |
     font-size: 16pt;
   }
   section.divider {
-    background: #6b2d7b;
-    color: #ffffff;
+    background: #6b2d7b !important;
+    color: #ffffff !important;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   section.divider h1 {
-    color: #ffffff;
+    color: #ffffff !important;
     font-size: 28pt;
     border-bottom: none;
   }
   section.divider footer {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  section.divider::after {
+    color: rgba(255, 255, 255, 0.5) !important;
   }
   footer {
     font-size: 9pt;
@@ -558,13 +585,13 @@ A real-world feature addition (drag-and-drop reordering):
 | Step | Time | Command |
 |---|---|---|
 | Skip constitution | — | Already set |
-| Create spec | ~2 m | `/specify drag and drop — let's make it so users can reorder goals by dragging...` |
-| Clarify spec | ~3 m | `/clarify` → answer 5 questions |
-| Plan feature | ~3 m | `/plan using @dnd-kit/sortable and Tailwind for styling` |
-| Generate tasks | ~1 m | `/tasks` |
-| Implement | ~5 m | `/implement` (new chat session) |
-| Total | ~15 m | Working drag-and-drop feature |
-| x | ~xxxxxx | xx |
+| Create spec | ~2 min | `/specify drag and drop — let's make it so users can reorder goals by dragging...` |
+| Clarify spec | ~3 min | `/clarify` → answer 5 questions |
+| Plan feature | ~3 min | `/plan using @dnd-kit/sortable and Tailwind for styling` |
+| Generate tasks | ~1 min | `/tasks` |
+| Implement | ~5 min | `/implement` (new chat session) |
+| **Total** | **~15 min** | Working drag-and-drop feature |
+
 
 ---
 
