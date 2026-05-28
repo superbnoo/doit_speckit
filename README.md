@@ -29,6 +29,9 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0
 ```
 specify init --here
 # then choose your agent, ex: claude-code, cursor-agent, ...
+
+# Use timestamp-based branch numbering (useful for distributed teams)
+specify init my-project --integration cursor-agent --branch-numbering timestamp
 ```
 
 # SpecKit Workflow Notes
