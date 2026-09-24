@@ -173,6 +173,69 @@ style: |
   em {
     color: #888888;
   }
+  section.twocol {
+    columns: 2;
+    column-gap: 40px;
+  }
+  section.twocol h1 {
+    column-span: all;
+  }
+  section.twocol h2 {
+    column-span: all;
+  }
+  .col-header {
+    display: inline-block;
+    font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .col-header-left {
+    color: #999999;
+    border: 1px solid #cccccc;
+    background: transparent;
+  }
+  .col-header-right {
+    color: #ffffff;
+    background: #6b2d7b;
+    border: 1px solid #6b2d7b;
+  }
+  .col-title {
+    font-family: 'AA Zuehlke Medium', 'AA Zuehlke', 'Inter', sans-serif;
+    font-size: 20pt;
+    font-weight: 500;
+    margin: 8px 0 16px 0;
+    line-height: 1.3;
+  }
+  .col-title-left {
+    color: #e94560;
+  }
+  .col-title-right {
+    color: #6b2d7b;
+  }
+  .paradigm-item {
+    font-size: 14pt;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .paradigm-warn {
+    color: #e94560;
+  }
+  .paradigm-ok {
+    color: #2ecc71;
+  }
+  .vs-badge {
+    display: inline-block;
+    column-span: all;
+    text-align: center;
+    font-size: 12pt;
+    color: #999999;
+    margin: 0;
+  }
 ---
 
 <!-- _class: lead -->
@@ -188,6 +251,32 @@ reliable coding agent workflows
 &#x00A0;
 
 An Tran - *29 May 2026*
+
+---
+
+<!-- _class: twocol -->
+
+# Two ways to build software
+
+## The Paradigm Shift
+
+<span class="col-header col-header-left">Traditional Development</span>
+
+<span class="col-title col-title-left">Code is the<br/>source of truth</span>
+
+<span class="paradigm-item">&#9889; Idea / Requirement</span>
+<span class="paradigm-item">&lt;/&gt; Write Code</span>
+<span class="paradigm-item">&#128196; Docs written after (maybe)</span>
+<span class="paradigm-item paradigm-warn">&#9888; Drift between intent & reality</span>
+
+<span class="col-header col-header-right">Spec-Driven Development</span>
+
+<span class="col-title col-title-right">Spec is the<br/>source of truth</span>
+
+<span class="paradigm-item">&#128196; Write the Spec first</span>
+<span class="paradigm-item">&#9776; Derive Plan & Tasks from Spec</span>
+<span class="paradigm-item">&lt;/&gt; Generate Code from Tasks</span>
+<span class="paradigm-item paradigm-ok">&#9989; Code always matches intent</span>
 
 ---
 
@@ -447,6 +536,7 @@ The AI checks its own work before you even review it.
 - **Do** review specs before planning — it's the foundation for everything
 - **Do** use the clarify step — fill gaps before they become bugs
 - **Do** start with an existing/scaffolded project — SpecKit works best adding features incrementally
+- **Do** have a feature dependency graph ready and plan the implementation sequence of specs
 - **Do** experiment with different AI models per stage — some are better at planning vs coding
 - **Do** commit after each stage — create checkpoints you can revert to
 - **Do** start a fresh chat for implementation — avoid context window bloat
